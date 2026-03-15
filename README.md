@@ -15,6 +15,7 @@ workspace/           → Copy these to ~/.openclaw/workspace/
   TOOLS.md           → Local notes (starts empty)
   HEARTBEAT.md       → Proactive check-in schedule
   MEMORY.md          → Long-term memory (starts nearly empty)
+  BOOTSTRAP.md       → First-run guide (agent deletes after onboarding)
   start.md           → Quick-start checklist for each session
   memory/            → Daily log folder (empty to start)
 
@@ -26,6 +27,7 @@ docs/
   smart-agent-guide.html   → Full visual setup guide (open in browser)
   example-config.json5     → Copy-paste config with comments
   memory-system.md         → How the memory system works
+  operator-playbook.md     → Patterns for getting the most from your agent
   customization.md         → Guide to personalizing each file
   troubleshooting.md       → Common issues and fixes
 ```

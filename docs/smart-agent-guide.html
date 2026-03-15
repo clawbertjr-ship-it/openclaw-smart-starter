@@ -1147,6 +1147,88 @@
 
     <!-- TROUBLESHOOTING -->
     <div class="section">
+      <div class="section-label rose">First Boot</div>
+      <h2>What Happens On First Run</h2>
+      <p class="lead">Your agent's first session is special. We handle it automatically with <code>BOOTSTRAP.md</code>.</p>
+
+      <p>When your agent starts for the first time, it finds <code>BOOTSTRAP.md</code> in the workspace. This file guides it through:</p>
+
+      <div class="steps">
+        <div class="step animate">
+          <div class="step-num" style="background: var(--rose-dim); border-color: var(--rose); color: var(--rose);">1</div>
+          <div class="step-content">
+            <h4>Read USER.md and SOUL.md</h4>
+            <p>The agent learns who you are and who it should be. Name, timezone, personality, boundaries.</p>
+          </div>
+        </div>
+        <div class="step animate delay-1">
+          <div class="step-num" style="background: var(--rose-dim); border-color: var(--rose); color: var(--rose);">2</div>
+          <div class="step-content">
+            <h4>Introduce Itself</h4>
+            <p>A genuine hello, referencing what it learned. Not a generic greeting — a personalized one.</p>
+          </div>
+        </div>
+        <div class="step animate delay-2">
+          <div class="step-num" style="background: var(--rose-dim); border-color: var(--rose); color: var(--rose);">3</div>
+          <div class="step-content">
+            <h4>Learn Through Conversation</h4>
+            <p>It asks about your work, preferences, and tools. Everything it learns gets written to memory.</p>
+          </div>
+        </div>
+        <div class="step animate delay-3">
+          <div class="step-num" style="background: var(--rose-dim); border-color: var(--rose); color: var(--rose);">4</div>
+          <div class="step-content">
+            <h4>Self-Destruct the Bootstrap</h4>
+            <p>Once onboarding is done, <code>BOOTSTRAP.md</code> is deleted. From then on, <code>start.md</code> handles every session startup. First boot is a one-time experience.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout sage-callout">
+        <strong>Why this matters:</strong> Without a first-boot guide, a brand-new agent reads MEMORY.md (empty), reads start.md ("continue where you left off" — but there IS no "where you left off"), and gives a generic response. BOOTSTRAP.md gives it a real first conversation.
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-label">Operator Guide</div>
+      <h2>Growing Your Agent Over Time</h2>
+      <p class="lead">An included <code>docs/operator-playbook.md</code> covers advanced patterns. Here's the summary:</p>
+
+      <div class="card-grid">
+        <div class="card animate">
+          <div class="card-icon">📐</div>
+          <h4>Context Architecture</h4>
+          <p>Keep workspace files lean. AGENTS.md under 100 lines, SOUL.md under 50, MEMORY.md under 150. Move details into docs and reference them.</p>
+        </div>
+        <div class="card animate delay-1">
+          <div class="card-icon">🧹</div>
+          <h4>Memory Hygiene</h4>
+          <p>Write only durable facts to MEMORY.md. Use daily logs for work-in-progress. Consolidate weekly. Prune monthly.</p>
+        </div>
+        <div class="card animate delay-2">
+          <div class="card-icon">🔄</div>
+          <h4>The Correction Loop</h4>
+          <p>Tell it directly → verify it understood → make it durable in MEMORY.md. Persistent correction beats repeated correction.</p>
+        </div>
+        <div class="card animate delay-3">
+          <div class="card-icon">📈</div>
+          <h4>Progressive Building</h4>
+          <p>Week 1: learn preferences. Week 2: install skills. Week 3: cron jobs. Month 1: full automation. Don't try everything at once.</p>
+        </div>
+        <div class="card animate delay-4">
+          <div class="card-icon">⚠️</div>
+          <h4>Common Failure Modes</h4>
+          <p>Too much context too early. Not writing things down. Personality drift after compaction. All documented with fixes in the playbook.</p>
+        </div>
+        <div class="card animate delay-5">
+          <div class="card-icon">🏆</div>
+          <h4>The Golden Rule</h4>
+          <p>Your agent is exactly as good as its workspace files. 5 minutes a week reviewing them compounds into an agent that feels like it knows you.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
       <div class="section-label amber">Help</div>
       <h2>Quick Troubleshooting</h2>
 
