@@ -18,6 +18,10 @@ workspace/           → Copy these to ~/.openclaw/workspace/
   start.md           → Quick-start checklist for each session
   memory/            → Daily log folder (empty to start)
 
+skills/              → Copy these to ~/.openclaw/workspace/skills/
+  17 essential skills bundled — context management, security,
+  agent discipline, and development workflows (see below)
+
 docs/
   smart-agent-guide.html   → Full visual setup guide (open in browser)
   example-config.json5     → Copy-paste config with comments
@@ -94,34 +98,50 @@ openclaw plugin install @martian-engineering/lossless-claw
 ### Mission Control Dashboard
 A web UI for tasks, memory, chat, and monitoring. Included separately — see the guide.
 
-## Recommended Skills
+## Bundled Skills (17 — ready to use)
 
-Skills live in `~/.openclaw/workspace/skills/`. Download from [ClawHub](https://clawhub.com).
+Copy the `skills/` folder to `~/.openclaw/workspace/skills/`. These are what separate a forgetful chatbot from a reliable persistent agent.
 
-**Already built into OpenClaw (no install needed):**
-- weather, summarize, github, session-logs, healthcheck, coding-agent, skill-creator
-
-**Essential add-ons (install these first):**
+**Context Management** (the compaction survival kit):
 | Skill | What It Does |
 |-------|-------------|
-| context-doctor | Diagnose context window health and token budget |
-| context-slimmer | Audit and slim always-loaded workspace files |
-| context-aware-delegation | Give cron jobs and sub-agents main session context |
+| context-aware-delegation | **Critical.** Gives cron/sub-agents access to main session history |
+| context-doctor | X-ray your context window — see what's eating your token budget |
+| context-slimmer | Slim always-loaded files to free token headroom |
+| arc-memory-pruner | Auto-prune memory files — prevents unbounded growth |
+
+**Security:**
+| Skill | What It Does |
+|-------|-------------|
+| heimdall | **Run before installing ANY new skill.** 65+ malicious pattern detectors |
+| eridian-carapace | Agent security hardening — 8 attack vector defenses |
+| credence | Vet MCP servers and AI tools against trust registry (0-100 score) |
+| openclaw-backup | Scheduled automatic backups of config, workspace, skills |
+
+**Agent Discipline** (good habits, built in):
+| Skill | What It Does |
+|-------|-------------|
+| writing-plans | Structured plans before touching code |
+| verification-before-completion | Verify before claiming done |
+| systematic-debugging | Reproduce → isolate → trace → fix → verify |
+| root-cause-tracing | Find original trigger, not symptoms |
+| deterministic-controller | Evidence-gated heartbeats (no false alarms) |
 | cron-doctor | Diagnose and triage scheduled task failures |
-| heimdall | Security scanner — scan new skills before installing |
-| openclaw-backup | Backup/restore config, skills, and workspace |
 
-**Productivity (pick what you use):**
+**Development Workflow:**
 | Skill | What It Does |
 |-------|-------------|
-| google-calendar | View events, schedule meetings, find free time |
-| gmail-secretary | AI email triage with draft replies (never auto-sends) |
-| google-docs / sheets / slides | Create and edit Google Workspace documents |
-| data-analyst | Data viz, SQL, charts, dashboards, statistics |
-| docx / xlsx / pptx | Create Word, Excel, PowerPoint files |
-| deep-research | Autonomous multi-step research reports ($2-5/task) |
+| git-workflows | Advanced git: rebase, bisect, worktrees, reflog |
+| using-git-worktrees | **Prevents file conflicts between parallel agents** |
+| finishing-a-development-branch | Guides branch completion — merge vs PR vs cleanup |
 
-**Safety tip:** Before installing skills from unknown sources, scan with Heimdall first.
+## More Skills
+
+**53 built into OpenClaw** (no install needed): weather, summarize, github, session-logs, healthcheck, coding-agent, skill-creator, nano-pdf, voice-call, and 44 more.
+
+**Recommended add-ons** from [ClawHub](https://clawhub.com): google-calendar, gmail-secretary, google-docs/sheets/slides, data-analyst, docx/xlsx/pptx, deep-research, academic-research, crawl4ai, and hundreds more.
+
+**Safety tip:** Heimdall is bundled — always scan new skills before installing.
 
 ## Full Guide
 

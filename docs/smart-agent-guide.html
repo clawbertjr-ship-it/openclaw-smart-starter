@@ -855,11 +855,136 @@
     <!-- RECOMMENDED SKILLS -->
     <div class="section">
       <div class="section-label sage">Extend</div>
-      <h2>Recommended Skills</h2>
-      <p class="lead">Skills are plugins that give your agent new abilities. They live in your workspace's <code>skills/</code> folder. Here's what we recommend — organized by what comes free and what to add.</p>
+      <h2>Skills — What's Included & What to Add</h2>
+      <p class="lead">Skills are plugins that give your agent new abilities. This starter kit ships with <strong>17 essential skills</strong> already in the <code>skills/</code> folder — plus OpenClaw has 53 built-in. Here's the full breakdown.</p>
 
-      <h3>Built Into OpenClaw (Already There)</h3>
-      <p>These ship with OpenClaw — no installation needed:</p>
+      <h3>🎁 Bundled With This Kit (17 skills — just copy the skills/ folder)</h3>
+      <p>These are in your <code>skills/</code> directory right now. They're what separate a forgetful chatbot from a reliable persistent agent.</p>
+
+      <h4 style="margin-top: 1.2em; color: var(--accent);">Context Management (the compaction survival kit)</h4>
+      <p style="font-size: 0.95em; color: var(--text-dim); margin-bottom: 0.8em;">Your agent's context window is finite. These skills help it use that space wisely — and not lose its mind during long sessions or after compaction.</p>
+      <div class="card-grid">
+        <div class="card animate">
+          <div class="card-icon">🔍</div>
+          <h4>Context-Aware Delegation</h4>
+          <p><strong>Critical.</strong> Gives cron jobs and sub-agents access to your main session's conversation history. Without this, background tasks run blind — they can't see what you've been discussing. Run cheap models (Haiku) with expensive-model context.</p>
+          <div class="filename">context-aware-delegation</div>
+        </div>
+        <div class="card animate delay-1">
+          <div class="card-icon">📊</div>
+          <h4>Context Doctor</h4>
+          <p>X-ray for your context window. Shows exactly what's eating your token budget — which files, which sections, how much headroom you have. Run this when your agent starts feeling "dumber" in long sessions.</p>
+          <div class="filename">context-doctor</div>
+        </div>
+        <div class="card animate delay-2">
+          <div class="card-icon">✂️</div>
+          <h4>Context Slimmer</h4>
+          <p>Once Context Doctor shows the problem, this fixes it. Audits always-loaded files and suggests what to move, remove, or compress. Pairs perfectly with Context Doctor.</p>
+          <div class="filename">context-slimmer</div>
+        </div>
+        <div class="card animate delay-3">
+          <div class="card-icon">🧹</div>
+          <h4>Arc Memory Pruner</h4>
+          <p>Auto-prunes memory files to prevent unbounded growth. Circular buffer for daily logs, importance-based retention. Without this, your <code>memory/</code> folder grows forever.</p>
+          <div class="filename">arc-memory-pruner</div>
+        </div>
+      </div>
+
+      <h4 style="margin-top: 1.5em; color: var(--accent);">Security</h4>
+      <p style="font-size: 0.95em; color: var(--text-dim); margin-bottom: 0.8em;">Skills are powerful — and that means they can be dangerous. These keep your agent safe.</p>
+      <div class="card-grid">
+        <div class="card animate">
+          <div class="card-icon">🛡️</div>
+          <h4>Heimdall</h4>
+          <p><strong>Run this before installing ANY new skill.</strong> Scans for prompt injection, data exfiltration, shell injection, supply chain attacks. 65+ detection patterns with context-aware suppression (low false positives).</p>
+          <div class="filename">heimdall</div>
+        </div>
+        <div class="card animate delay-1">
+          <div class="card-icon">🔒</div>
+          <h4>Eridian Carapace</h4>
+          <p>Agent security hardening. Defends against 8 attack vectors: prompt injection, credential theft, unauthorized operations, data exfiltration. Includes audit checklist and approval flows.</p>
+          <div class="filename">eridian-carapace</div>
+        </div>
+        <div class="card animate delay-2">
+          <div class="card-icon">🔎</div>
+          <h4>Credence</h4>
+          <p>Check any MCP server or AI tool against a trust registry before installing. Scores security, provenance, and behavioral risk on a 0-100 scale.</p>
+          <div class="filename">credence</div>
+        </div>
+        <div class="card animate delay-3">
+          <div class="card-icon">💾</div>
+          <h4>OpenClaw Backup</h4>
+          <p>Schedule automatic backups of your config, workspace, skills, and settings. Restore to any point. Peace of mind.</p>
+          <div class="filename">openclaw-backup</div>
+        </div>
+      </div>
+
+      <h4 style="margin-top: 1.5em; color: var(--accent);">Agent Discipline (good habits, built in)</h4>
+      <p style="font-size: 0.95em; color: var(--text-dim); margin-bottom: 0.8em;">These shape how your agent works — planning before acting, verifying before claiming done, debugging systematically instead of guessing.</p>
+      <div class="card-grid">
+        <div class="card animate">
+          <div class="card-icon">📋</div>
+          <h4>Writing Plans</h4>
+          <p>Write structured implementation plans before touching code. Multi-step task decomposition. Prevents "dive in and regret it" patterns.</p>
+          <div class="filename">writing-plans</div>
+        </div>
+        <div class="card animate delay-1">
+          <div class="card-icon">✅</div>
+          <h4>Verification Before Completion</h4>
+          <p>Run verification before claiming work is done. Prevents the classic "it's done!" when it's actually broken.</p>
+          <div class="filename">verification-before-completion</div>
+        </div>
+        <div class="card animate delay-2">
+          <div class="card-icon">🔬</div>
+          <h4>Systematic Debugging</h4>
+          <p>Structured debugging methodology — reproduce, isolate, trace, fix, verify. No more random guessing at solutions.</p>
+          <div class="filename">systematic-debugging</div>
+        </div>
+        <div class="card animate delay-3">
+          <div class="card-icon">🔗</div>
+          <h4>Root Cause Tracing</h4>
+          <p>Trace errors back to their original trigger before proposing fixes. Prevents band-aid solutions that break again tomorrow.</p>
+          <div class="filename">root-cause-tracing</div>
+        </div>
+        <div class="card animate delay-4">
+          <div class="card-icon">🎯</div>
+          <h4>Deterministic Controller</h4>
+          <p>Evidence-gated heartbeat and sprint templates. Makes scheduled check-ins reliable — only fires when there's actual work to do.</p>
+          <div class="filename">deterministic-controller</div>
+        </div>
+        <div class="card animate delay-5">
+          <div class="card-icon">🩺</div>
+          <h4>Cron Doctor</h4>
+          <p>Diagnose and triage cron job failures. Checks states, identifies error patterns, generates health reports. Essential once you have scheduled tasks.</p>
+          <div class="filename">cron-doctor</div>
+        </div>
+      </div>
+
+      <h4 style="margin-top: 1.5em; color: var(--accent);">Development Workflow</h4>
+      <p style="font-size: 0.95em; color: var(--text-dim); margin-bottom: 0.8em;">If your agent writes code (and it will), these prevent the most common disasters.</p>
+      <div class="card-grid">
+        <div class="card animate">
+          <div class="card-icon">🌳</div>
+          <h4>Git Workflows</h4>
+          <p>Advanced git: rebasing, bisecting bugs, worktrees for parallel development, reflog recovery, merge conflicts.</p>
+          <div class="filename">git-workflows</div>
+        </div>
+        <div class="card animate delay-1">
+          <div class="card-icon">🌿</div>
+          <h4>Using Git Worktrees</h4>
+          <p><strong>Prevents file conflicts when sub-agents are working.</strong> Without this, two agents editing the same checkout will corrupt each other's work. We learned this the hard way (4+ incidents in one day).</p>
+          <div class="filename">using-git-worktrees</div>
+        </div>
+        <div class="card animate delay-2">
+          <div class="card-icon">🏁</div>
+          <h4>Finishing a Development Branch</h4>
+          <p>Guides branch completion — merge vs. PR vs. cleanup. Prevents abandoned branches and messy merges.</p>
+          <div class="filename">finishing-a-development-branch</div>
+        </div>
+      </div>
+
+      <h3 style="margin-top: 2em;">📦 Built Into OpenClaw (53 skills — already there)</h3>
+      <p>These ship with OpenClaw automatically — no installation needed:</p>
       <div class="card-grid">
         <div class="card animate">
           <div class="card-icon">🌤️</div>
@@ -879,7 +1004,7 @@
         <div class="card animate delay-3">
           <div class="card-icon">🎯</div>
           <h4>Session Logs</h4>
-          <p>Search and analyze your own past session logs using jq.</p>
+          <p>Search and analyze your own past session logs.</p>
         </div>
         <div class="card animate delay-4">
           <div class="card-icon">🛡️</div>
@@ -892,49 +1017,12 @@
           <p>Delegate coding tasks to Codex, Claude Code, or other coding agents.</p>
         </div>
       </div>
+      <p style="color: var(--text-dim); font-size: 0.9em;">Plus 47 more: Skill Creator, Google Workspace (gog), Nano PDF, Video Frames, Voice Call, Gemini, ClawHub browser, Discord, Slack, 1Password, Notion, Obsidian, Spotify, Trello, and many more.</p>
 
-      <h3>Essential Add-Ons (Install These First)</h3>
-      <p>These make your agent significantly smarter. Install from <a href="https://clawhub.com" target="_blank">ClawHub</a>:</p>
-      <div class="card-grid">
-        <div class="card animate">
-          <div class="card-icon">📊</div>
-          <h4>Context Doctor</h4>
-          <p>Diagnose context window health. Shows what's eating your token budget and why your agent might feel "dumber" in long sessions. Essential for tuning.</p>
-          <div class="filename">context-doctor</div>
-        </div>
-        <div class="card animate delay-1">
-          <div class="card-icon">✂️</div>
-          <h4>Context Slimmer</h4>
-          <p>Audit and slim down always-loaded files (AGENTS.md, SOUL.md, etc.). Frees token budget for actual conversation. Pairs with Context Doctor.</p>
-          <div class="filename">context-slimmer</div>
-        </div>
-        <div class="card animate delay-2">
-          <div class="card-icon">🔍</div>
-          <h4>Context-Aware Delegation</h4>
-          <p>Give cron jobs and sub-agents full conversation context from your main session. Run cheap background tasks (Haiku) with expensive context (Sonnet awareness).</p>
-          <div class="filename">context-aware-delegation</div>
-        </div>
-        <div class="card animate delay-3">
-          <div class="card-icon">🩺</div>
-          <h4>Cron Doctor</h4>
-          <p>Diagnose and triage cron job failures. Checks states, identifies error patterns, generates health reports. Essential once you start using scheduled tasks.</p>
-          <div class="filename">cron-doctor</div>
-        </div>
-        <div class="card animate delay-4">
-          <div class="card-icon">🛡️</div>
-          <h4>Heimdall</h4>
-          <p>Security scanner for skills. Scans for malicious patterns, prompt injection, data exfiltration before you install anything. Always run this on new skills.</p>
-          <div class="filename">heimdall</div>
-        </div>
-        <div class="card animate delay-5">
-          <div class="card-icon">💾</div>
-          <h4>OpenClaw Backup</h4>
-          <p>Backup and restore your OpenClaw config, skills, workspace, and settings. Peace of mind.</p>
-          <div class="filename">openclaw-backup</div>
-        </div>
-      </div>
+      <h3 style="margin-top: 2em;">🔗 Recommended Add-Ons (install from ClawHub)</h3>
+      <p>Once you're comfortable, add these based on what you do:</p>
 
-      <h3>Productivity (Pick What You Use)</h3>
+      <h4 style="margin-top: 1em; color: var(--text-dim);">Productivity & Google Workspace</h4>
       <div class="card-grid">
         <div class="card animate">
           <div class="card-icon">📅</div>
@@ -945,46 +1033,56 @@
         <div class="card animate delay-1">
           <div class="card-icon">📧</div>
           <h4>Gmail Secretary</h4>
-          <p>AI email triage — classifies, labels, drafts replies. Never auto-sends. Uses Haiku for cheap classification.</p>
+          <p>AI email triage — classifies, labels, drafts replies. Never auto-sends.</p>
           <div class="filename">gmail-secretary</div>
         </div>
         <div class="card animate delay-2">
           <div class="card-icon">📄</div>
-          <h4>Google Docs / Sheets / Slides</h4>
-          <p>Create and edit Google Workspace documents from chat.</p>
-          <div class="filename">google-docs, google-sheets, google-slides</div>
+          <h4>Google Docs / Sheets / Slides / Drive</h4>
+          <p>Full Google Workspace integration — create, edit, organize documents.</p>
+          <div class="filename">google-docs, google-sheets, google-slides, google-drive</div>
         </div>
-        <div class="card animate delay-3">
+      </div>
+
+      <h4 style="margin-top: 1em; color: var(--text-dim);">Data & Documents</h4>
+      <div class="card-grid">
+        <div class="card animate">
           <div class="card-icon">📊</div>
           <h4>Data Analyst</h4>
-          <p>Data visualization, SQL queries, charts, dashboards, and statistical summaries from raw data.</p>
+          <p>Data visualization, SQL queries, charts, dashboards, and statistical summaries.</p>
           <div class="filename">data-analyst</div>
         </div>
-        <div class="card animate delay-4">
+        <div class="card animate delay-1">
           <div class="card-icon">📑</div>
           <h4>DOCX / XLSX / PPTX</h4>
-          <p>Create Word docs, Excel spreadsheets, and PowerPoint presentations. Great for reports.</p>
+          <p>Create Word docs, Excel spreadsheets, and PowerPoint presentations.</p>
           <div class="filename">docx, xlsx, pptx</div>
         </div>
-        <div class="card animate delay-5">
+        <div class="card animate delay-2">
           <div class="card-icon">🔬</div>
           <h4>Deep Research</h4>
-          <p>Autonomous multi-step research using Gemini. Produces detailed, cited reports in 2-10 minutes. Costs $2-5/task.</p>
+          <p>Autonomous multi-step research using Gemini. Cited reports in 2-10 min.</p>
           <div class="filename">deep-research</div>
         </div>
       </div>
 
-      <h3>How to Install Skills</h3>
-      <p>Most skills are just a folder with a <code>SKILL.md</code> file. To install:</p>
+      <h4 style="margin-top: 1em; color: var(--text-dim);">Developer Tools</h4>
+      <p style="font-size: 0.9em; color: var(--text-dim);">If your agent writes code, check ClawHub for: <strong>VibeSec-Skill</strong> (web security scanning), <strong>code-qc</strong> (quality audits), <strong>test-driven-development</strong>, <strong>depguard</strong> (dependency vulnerabilities), <strong>gh-action-gen</strong> (CI/CD), and framework-specific skills (Next.js, Tailwind, React).</p>
+
+      <h4 style="margin-top: 1em; color: var(--text-dim);">Domain-Specific</h4>
+      <p style="font-size: 0.9em; color: var(--text-dim);">Science: <strong>academic-research</strong>, <strong>chemistry-query</strong>, <strong>literature-search</strong>, <strong>medical-research-toolkit</strong>. Marketing: <strong>content-creator</strong>, <strong>sovereign-seo-audit</strong>, <strong>competitor-analysis</strong>. Project management: <strong>agile-product-owner</strong>. Browse all at <a href="https://clawhub.com" target="_blank">clawhub.com</a>.</p>
+
+      <h3 style="margin-top: 2em;">How to Install More Skills</h3>
+      <p>Skills are folders with a <code>SKILL.md</code> file. To install:</p>
       <pre>1. Download from ClawHub (https://clawhub.com)
 2. Unzip into your workspace skills folder:
    Windows:    C:\Users\YOU\.openclaw\workspace\skills\
    Mac/Linux:  ~/.openclaw/workspace/skills/
 3. Restart the gateway: openclaw gateway restart
-4. Your agent will automatically discover and use the skill</pre>
+4. Your agent discovers and uses the skill automatically</pre>
 
       <div class="callout sage-callout">
-        <strong>Safety first:</strong> Before installing skills from unknown sources, scan them with Heimdall: run <code>heimdall scan &lt;skill-folder&gt;</code>. It checks for malicious patterns, prompt injection, data exfiltration, and supply chain attacks. We scan every skill before installing it.
+        <strong>🛡️ Safety first:</strong> This kit includes <strong>Heimdall</strong> — a security scanner for skills. Before installing anything from unknown sources, your agent should run <code>heimdall scan &lt;skill-folder&gt;</code>. It checks for prompt injection, data exfiltration, shell injection, and supply chain attacks. We scan every skill before installing it.
       </div>
 
       <p>Browse hundreds more at <a href="https://clawhub.com" target="_blank">clawhub.com</a>.</p>
