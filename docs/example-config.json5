@@ -1,0 +1,77 @@
+// OpenClaw Smart Agent — Example Configuration
+// Copy this to: ~/.openclaw/openclaw.json
+//
+// WINDOWS PATH: C:\Users\YOUR_USERNAME\.openclaw\openclaw.json
+// MAC PATH:     /Users/YOUR_USERNAME/.openclaw/openclaw.json
+// LINUX PATH:   /home/YOUR_USERNAME/.openclaw/openclaw.json
+//
+// This is JSON5 format — comments and trailing commas are allowed.
+// After editing, restart: openclaw gateway restart
+
+{
+  agents: {
+    defaults: {
+      // Your workspace directory (where AGENTS.md, SOUL.md, etc. live)
+      workspace: "~/.openclaw/workspace",
+
+      // Model — pick your provider
+      // Options: "anthropic/claude-sonnet-4-5", "openai/gpt-5.2", etc.
+      model: {
+        primary: "anthropic/claude-sonnet-4-5",
+      },
+
+      // === MEMORY SYSTEM (Critical!) ===
+      compaction: {
+        // "safeguard" mode asks agent to save before compacting
+        mode: "safeguard",
+
+        memoryFlush: {
+          // THIS IS THE MOST IMPORTANT SETTING
+          // Without this, your agent forgets everything
+          enabled: true,
+          prompt: "Write any lasting notes to memory/YYYY-MM-DD.md; reply with NO_REPLY if nothing to store.",
+          systemPrompt: "Session nearing compaction. Store durable memories now.",
+        },
+
+        // These sections from AGENTS.md get re-injected after compaction
+        // Must match the ## headers in your AGENTS.md exactly
+        postCompactionSections: ["Every Session", "Memory", "Safety"],
+      },
+
+      // === HEARTBEAT (Proactive Check-Ins) ===
+      heartbeat: {
+        every: "30m",  // How often to check in (30m, 1h, 2h, etc.)
+      },
+
+      // === MEMORY SEARCH (Optional but recommended) ===
+      // Lets your agent search across all memory files by meaning
+      //
+      // Option 1: Free Google AI (recommended)
+      // Get a free API key at: https://aistudio.google.com/apikey
+      memorySearch: {
+        remote: {
+          provider: "gemini",
+          model: "gemini-embedding-2-preview",
+          apiKey: "YOUR_GOOGLE_AI_API_KEY_HERE",
+          fallback: "local",
+        },
+      },
+      //
+      // Option 2: Local only (no API key needed, keyword-based)
+      // memorySearch: {
+      //   provider: "local",
+      // },
+
+      // === CONTEXT MANAGEMENT ===
+      contextPruning: {
+        mode: "cache-ttl",
+        ttl: "1h",
+      },
+    },
+  },
+
+  // === GATEWAY SETTINGS ===
+  gateway: {
+    port: 18789,
+  },
+}
