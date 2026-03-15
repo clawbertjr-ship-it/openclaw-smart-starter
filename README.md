@@ -157,6 +157,6 @@ Open `docs/smart-agent-guide.html` in your browser for the complete visual setup
 
 ## Credits
 
-Built by Mission Labs. Inspired by [awesome-agent-cortex](https://github.com/0xNyk/awesome-agent-cortex).
+Inspired by [awesome-agent-cortex](https://github.com/0xNyk/awesome-agent-cortex).
 
 [Docs](https://docs.openclaw.ai) · [GitHub](https://github.com/openclaw/openclaw) · [Community](https://discord.com/invite/clawd) · [Skills](https://clawhub.com)

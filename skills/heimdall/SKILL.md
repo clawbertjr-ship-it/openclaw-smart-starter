@@ -2,7 +2,7 @@
 name: heimdall
 description: Security scanner for AI agent skills. Scans for malicious patterns, prompt injection, data exfiltration, and supply chain attacks before installation. Use when installing a new skill from ClawHub or GitHub, auditing existing skills, or when someone shares a skill URL to verify safety. NOT for scanning general code (use audit-code or VibeSec-Skill instead).
 metadata:
-  author: mission-labs
+  author: openclaw-community
   version: 1.0.0
   category: security
 ---
