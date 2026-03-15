@@ -1,164 +1,155 @@
-# OpenClaw Smart Agent Starter
+# OpenClaw Operations Kit
 
-> Turn a basic AI assistant into one that **remembers everything, learns from mistakes, and gets better over time.**
+> **Drop-in workspace templates, 17 essential skills, production configs, and the complete operations guide for running AI agents that remember everything, learn from mistakes, and get better over time.**
 
-A vanilla OpenClaw install gives you a capable AI agent. But without the right workspace setup, it forgets everything between sessions. This starter kit fixes that.
+A vanilla OpenClaw install gives you a capable AI agent. This kit gives you the workspace architecture, skills, and operational knowledge to run it like a production system.
 
-## What's Inside
+## 🚀 Quick Start (15 minutes)
 
-```
-workspace/           → Copy these to ~/.openclaw/workspace/
-  AGENTS.md          → Operating manual (session startup, memory rules, safety)
-  SOUL.md            → Agent personality and communication style
-  USER.md            → Information about YOU
-  IDENTITY.md        → Agent name and role
-  TOOLS.md           → Local notes (starts empty)
-  HEARTBEAT.md       → Proactive check-in schedule
-  MEMORY.md          → Long-term memory (starts nearly empty)
-  BOOTSTRAP.md       → First-run guide (agent deletes after onboarding)
-  start.md           → Quick-start checklist for each session
-  memory/            → Daily log folder (empty to start)
+```bash
+# 1. Install OpenClaw
+npm install -g openclaw && openclaw configure
 
-skills/              → Copy these to ~/.openclaw/workspace/skills/
-  17 essential skills bundled — context management, security,
-  agent discipline, and development workflows (see below)
+# 2. Clone this kit
+git clone https://github.com/clawbertjr-ship-it/openclaw-smart-starter
+cd openclaw-smart-starter
 
-docs/
-  smart-agent-guide.html   → Full visual setup guide (open in browser)
-  example-config.json5     → Copy-paste config with comments
-  memory-system.md         → How the memory system works
-  operator-playbook.md     → Patterns for getting the most from your agent
-  customization.md         → Guide to personalizing each file
-  troubleshooting.md       → Common issues and fixes
+# 3. Run setup
+./setup.bat    # Windows
+./setup.sh     # Mac/Linux
+
+# 4. Fill in USER.md, SOUL.md, IDENTITY.md with your info
+# 5. Copy a config from configs/ to ~/.openclaw/openclaw.json
+# 6. Start: openclaw gateway start
 ```
 
-## Quick Start (15 minutes)
+Your agent reads BOOTSTRAP.md on first run and guides itself through onboarding.
 
-1. **Install OpenClaw:** `npm install -g openclaw && openclaw configure`
-2. **Copy workspace files** to `~/.openclaw/workspace/` (see paths below)
-3. **Fill in the brackets** in USER.md, SOUL.md, IDENTITY.md
-4. **Configure memory** — copy `docs/example-config.json5` into your `openclaw.json`
-5. **Start:** `openclaw gateway start`
+---
 
-### Where is everything?
+## 📖 The Guide
 
-| What | Windows | Mac/Linux |
-|------|---------|-----------|
-| Config file | `C:\Users\YOU\.openclaw\openclaw.json` | `~/.openclaw/openclaw.json` |
-| Workspace | `C:\Users\YOU\.openclaw\workspace\` | `~/.openclaw/workspace/` |
+**[OpenClaw Advanced Operations Guide](docs/advanced-operations.html)** ← Download and open in your browser
 
-**Windows tip:** Press `Win + R`, type `%USERPROFILE%\.openclaw`, press Enter.
+The complete 69KB visual guide covering everything from basic architecture to multi-agent orchestration to production security. Five parts, 20 sections:
 
-## Critical Config Settings
+| Part | Covers |
+|------|--------|
+| **Part 1: Architecture** | How OpenClaw works, config deep dive, 4-tier memory system, LCM plugin, workspace mastery, context engineering |
+| **Part 2: Multi-Agent** | Agent roles, model selection & cost optimization, subagent dispatch patterns, Docker sandbox, agent-to-agent comms |
+| **Part 3: Channels & Access** | WhatsApp/Telegram/Discord/Signal setup, Tailscale remote access, mobile node pairing, browser control, Mission Control dashboard |
+| **Part 4: Automation** | Cron jobs & scheduling, 137-skill catalog, voice/TTS, NotebookLM integration, custom ops scripts |
+| **Part 5: Production** | Security hardening checklist, backup & recovery, monitoring, performance tuning, daily/weekly/monthly operator routines |
 
-These go in your `openclaw.json` under `agents.defaults`. See `docs/example-config.json5` for a complete example.
+---
+
+## 📁 What's Inside
+
+### Workspace Templates (`workspace/`)
+Drop-in files for `~/.openclaw/workspace/`. Each has `[BRACKETS]` to fill in.
+
+| File | Purpose |
+|------|---------|
+| `AGENTS.md` | Operating manual — session startup, memory rules, safety, first-week guide, failure modes |
+| `SOUL.md` | Agent personality, communication style, security boundaries |
+| `USER.md` | About you — name, timezone, what you do |
+| `IDENTITY.md` | Agent name and role |
+| `MEMORY.md` | Long-term curated memory (starts empty, grows over time) |
+| `HEARTBEAT.md` | Proactive check-in rules |
+| `BOOTSTRAP.md` | First-run onboarding (agent deletes after completing) |
+| `start.md` | Session startup checklist |
+| `TOOLS.md` | Local environment notes |
+
+### Configs (`configs/`)
+Example configurations — copy one to `~/.openclaw/openclaw.json`.
+
+| Config | For | Features |
+|--------|-----|----------|
+| `minimal.json5` | Getting started | 1 agent, memory flush, heartbeat |
+| `standard.json5` | Recommended | + Semantic search (free Gemini), context pruning |
+| `advanced.json5` | Power users | + Multi-agent, LCM plugin, Docker sandbox, Tailscale |
+
+### Skills (`skills/`)
+17 essential skills, pre-scanned with Heimdall.
+
+**Context Management:**
+- `context-aware-delegation` — Give cron/subagents main session context
+- `context-doctor` — Diagnose context window usage
+- `context-slimmer` — Reduce always-loaded context
+- `arc-memory-pruner` — Auto-prune memory files
+
+**Security:**
+- `heimdall` — Scan skills before installing (65+ detection patterns)
+- `eridian-carapace` — Agent security hardening
+- `credence` — Check MCP server trustworthiness
+
+**Agent Discipline:**
+- `deterministic-controller` — Structured agent workflows
+- `systematic-debugging` — Root cause analysis framework
+- `verification-before-completion` — Don't report done until verified
+- `root-cause-tracing` — Trace failures to origin
+- `writing-plans` — Plan before executing
+
+**Development Workflow:**
+- `git-workflows` — Advanced git operations
+- `using-git-worktrees` — Parallel development branches
+- `finishing-a-development-branch` — Merge/PR decision framework
+- `openclaw-backup` — Backup workspace and config
+
+### Guides (`guides/`)
+
+| Guide | What It Covers |
+|-------|----------------|
+| [Advanced Operations (HTML)](guides/advanced-operations.html) | The complete 5-part visual guide |
+| [Operator Playbook](guides/operator-playbook.md) | Daily patterns for running a persistent agent |
+| [Memory System](guides/memory-system.md) | 4-tier memory architecture + LCM deep dive |
+| [Customization](guides/customization.md) | SOUL.md personalities, USER.md tips, AGENTS.md patterns |
+| [Troubleshooting](guides/troubleshooting.md) | Common issues and fixes |
+
+---
+
+## 🧠 The Memory System (Why This Kit Exists)
+
+Without proper configuration, your AI agent forgets everything between sessions. Three settings fix this:
 
 ```json5
+// In openclaw.json → agents.defaults
 compaction: {
   mode: "safeguard",
-  memoryFlush: {
-    enabled: true,  // ← REQUIRED — saves notes before compaction
-    prompt: "Write any lasting notes to memory/YYYY-MM-DD.md",
-    systemPrompt: "Session nearing compaction. Store durable memories now."
-  },
-  // Re-injects these AGENTS.md sections after compaction
-  // Must match your ## headers exactly
-  postCompactionSections: ["Every Session", "Memory", "Safety"]
+  memoryFlush: { enabled: true },          // ← Saves before compaction
+  postCompactionSections: ["Every Session", "Memory", "Safety"]  // ← Re-injects after
 },
-heartbeat: {
-  every: "30m"
-}
+heartbeat: { every: "30m" }                // ← Periodic check-ins
 ```
 
-**Without `memoryFlush` + `postCompactionSections`, your agent WILL forget things.**
-
-- `memoryFlush` tells your agent to save notes before compaction happens
-- `postCompactionSections` re-injects key instructions after compaction so the agent knows to read those saved notes
-- Without both, the agent saves its notes but then forgets it has notes to read
-
-## Optional Enhancements
-
-### Semantic Memory Search (Free)
-Get a free API key from [Google AI Studio](https://aistudio.google.com/apikey), then add:
-```json5
-memorySearch: {
-  remote: {
-    provider: "gemini",
-    model: "gemini-embedding-2-preview",
-    apiKey: "YOUR_KEY",
-    fallback: "local"
-  }
-}
-```
-
-### LCM Plugin (Lossless Compaction)
-Makes compaction lossless — old messages become searchable summaries instead of being lost:
+**For lossless compaction** (nothing permanently lost), add the LCM plugin:
 ```bash
 openclaw plugin install @martian-engineering/lossless-claw
 ```
 
-### Mission Control Dashboard
-A web UI for tasks, memory, chat, and monitoring. Included separately — see the guide.
+This uses AI-powered summarization during compaction. Compacted messages become searchable summaries that expand back to full detail on demand.
 
-## Bundled Skills (17 — ready to use)
+---
 
-Copy the `skills/` folder to `~/.openclaw/workspace/skills/`. These are what separate a forgetful chatbot from a reliable persistent agent.
+## 🔒 Security
 
-**Context Management** (the compaction survival kit):
-| Skill | What It Does |
-|-------|-------------|
-| context-aware-delegation | **Critical.** Gives cron/sub-agents access to main session history |
-| context-doctor | X-ray your context window — see what's eating your token budget |
-| context-slimmer | Slim always-loaded files to free token headroom |
-| arc-memory-pruner | Auto-prune memory files — prevents unbounded growth |
+- **Always run `heimdall`** before installing any new skill
+- **Never put secrets** in workspace files — use `~/.openclaw/secrets/`
+- **Use top-tier models** for agents with tool access
+- **Sandbox subagents** that handle untrusted input
 
-**Security:**
-| Skill | What It Does |
-|-------|-------------|
-| heimdall | **Run before installing ANY new skill.** 65+ malicious pattern detectors |
-| eridian-carapace | Agent security hardening — 8 attack vector defenses |
-| credence | Vet MCP servers and AI tools against trust registry (0-100 score) |
-| openclaw-backup | Scheduled automatic backups of config, workspace, skills |
+---
 
-**Agent Discipline** (good habits, built in):
-| Skill | What It Does |
-|-------|-------------|
-| writing-plans | Structured plans before touching code |
-| verification-before-completion | Verify before claiming done |
-| systematic-debugging | Reproduce → isolate → trace → fix → verify |
-| root-cause-tracing | Find original trigger, not symptoms |
-| deterministic-controller | Evidence-gated heartbeats (no false alarms) |
-| cron-doctor | Diagnose and triage scheduled task failures |
+## 📚 Related Resources
 
-**Development Workflow:**
-| Skill | What It Does |
-|-------|-------------|
-| git-workflows | Advanced git: rebase, bisect, worktrees, reflog |
-| using-git-worktrees | **Prevents file conflicts between parallel agents** |
-| finishing-a-development-branch | Guides branch completion — merge vs PR vs cleanup |
+- [OpenClaw Docs](https://docs.openclaw.ai) — Official documentation
+- [OpenClaw GitHub](https://github.com/openclaw/openclaw) — Source code
+- [ClawHub](https://clawhub.com) — Skill marketplace
+- [Community Discord](https://discord.com/invite/clawd) — Get help
+- [Awesome Agent Cortex](https://github.com/0xNyk/awesome-agent-cortex) — Curated agent ecosystem resources
 
-## More Skills
+---
 
-**53 built into OpenClaw** (no install needed): weather, summarize, github, session-logs, healthcheck, coding-agent, skill-creator, nano-pdf, voice-call, and 44 more.
+## License
 
-**Recommended add-ons** from [ClawHub](https://clawhub.com): google-calendar, gmail-secretary, google-docs/sheets/slides, data-analyst, docx/xlsx/pptx, deep-research, academic-research, crawl4ai, and hundreds more.
-
-**Safety tip:** Heimdall is bundled — always scan new skills before installing.
-
-## Full Guide
-
-Open `docs/smart-agent-guide.html` in your browser for the complete visual setup guide.
-
-## Troubleshooting
-
-- **Agent doesn't remember?** → Check `memoryFlush.enabled: true` AND `postCompactionSections`
-- **Can't find config?** → Windows: `Win+R` → `%USERPROFILE%\.openclaw\openclaw.json`
-- **Confused after long chats?** → `postCompactionSections` must match AGENTS.md headers exactly
-- **No daily logs?** → Create `memory/` directory in workspace
-- **Run diagnostics:** `openclaw doctor`
-
-## Credits
-
-Inspired by [awesome-agent-cortex](https://github.com/0xNyk/awesome-agent-cortex).
-
-[Docs](https://docs.openclaw.ai) · [GitHub](https://github.com/openclaw/openclaw) · [Community](https://discord.com/invite/clawd) · [Skills](https://clawhub.com)
+MIT

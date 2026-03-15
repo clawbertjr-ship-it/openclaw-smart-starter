@@ -1,0 +1,28 @@
+// OpenClaw Minimal Config — Get started fast
+// Copy to: ~/.openclaw/openclaw.json
+// Just memory + heartbeat. Nothing fancy. Works great for a single agent.
+
+{
+  agents: {
+    defaults: {
+      workspace: "~/.openclaw/workspace",
+      model: {
+        primary: "anthropic/claude-sonnet-4-5",  // or "openai/gpt-5.2"
+      },
+      compaction: {
+        mode: "safeguard",
+        memoryFlush: {
+          enabled: true,  // ⚠️ This is the only setting that truly matters
+          prompt: "Write any lasting notes to memory/YYYY-MM-DD.md",
+        },
+        postCompactionSections: ["Every Session", "Memory", "Safety"],
+      },
+      heartbeat: {
+        every: "1h",
+      },
+    },
+  },
+  gateway: {
+    port: 18789,
+  },
+}

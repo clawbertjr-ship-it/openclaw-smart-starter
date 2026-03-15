@@ -1,0 +1,89 @@
+// OpenClaw Advanced Config — Multi-agent, LCM, Sandbox, Semantic Search
+// Copy to: ~/.openclaw/openclaw.json
+
+{
+  agents: {
+    defaults: {
+      workspace: "~/.openclaw/workspace",
+
+      model: {
+        primary: "anthropic/claude-opus-4-6",
+        fallbacks: [
+          "anthropic/claude-sonnet-4",
+          "anthropic/claude-3-5-haiku",
+        ],
+      },
+
+      compaction: {
+        mode: "safeguard",
+        memoryFlush: {
+          enabled: true,
+          prompt: "Write any lasting notes to memory/YYYY-MM-DD.md; reply with NO_REPLY if nothing to store.",
+          systemPrompt: "Session nearing compaction. Store durable memories now.",
+        },
+        postCompactionSections: ["Every Session", "Memory", "Safety"],
+      },
+
+      heartbeat: {
+        every: "30m",
+        // model: "openai-codex/gpt-5.3-codex",  // Use cheap model for heartbeats
+      },
+
+      memorySearch: {
+        remote: {
+          provider: "gemini",
+          model: "gemini-embedding-2-preview",
+          apiKey: "YOUR_GOOGLE_AI_API_KEY",
+          fallback: "local",
+        },
+      },
+
+      contextPruning: {
+        mode: "cache-ttl",
+        ttl: "1h",
+      },
+
+      // Sandbox subagents (requires Docker)
+      // sandbox: {
+      //   mode: "non-main",
+      //   docker: {
+      //     image: "node:24-slim",
+      //     memoryMb: 2048,
+      //     cpus: 2,
+      //   },
+      // },
+    },
+
+    // Add specialized agents here
+    list: {
+      "main": {
+        // Main agent uses defaults above
+        // allowedSubagents: ["dev", "researcher"],
+      },
+      // "dev": {
+      //   model: { primary: "anthropic/claude-opus-4-6" },
+      //   workspace: "~/.openclaw/workspace-dev",
+      // },
+      // "researcher": {
+      //   model: { primary: "anthropic/claude-opus-4-6" },
+      //   workspace: "~/.openclaw/workspace-researcher",
+      // },
+    },
+  },
+
+  // LCM Plugin — lossless compaction
+  plugins: {
+    entries: {
+      "lossless-claw": {
+        enabled: true,
+      },
+    },
+  },
+
+  gateway: {
+    port: 18789,
+    bind: "127.0.0.1",
+    // Tailscale remote access (optional)
+    // tailscale: { mode: "serve" },
+  },
+}
