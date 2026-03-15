@@ -1,0 +1,86 @@
+name: Monthly Freshness Audit
+
+on:
+  schedule:
+    - cron: '0 12 1 * *'  # First of every month at noon UTC
+  workflow_dispatch:       # Manual trigger
+
+jobs:
+  freshness-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Full history for date checks
+
+      - name: Audit file freshness
+        run: |
+          echo "# Monthly Freshness Audit - $(date +%Y-%m-%d)"
+          echo ""
+
+          echo "## Last commit date per directory"
+          for dir in workspace configs guides docs skills; do
+            if [ -d "$dir" ]; then
+              last_commit=$(git log -1 --format="%ci" -- "$dir" 2>/dev/null || echo "never")
+              echo "  $dir/: $last_commit"
+            fi
+          done
+
+          echo ""
+          echo "## Workspace template sizes"
+          for f in workspace/*.md; do
+            [ -f "$f" ] || continue
+            lines=$(wc -l < "$f")
+            bytes=$(wc -c < "$f")
+            echo "  $f: $lines lines, $bytes bytes"
+          done
+
+          echo ""
+          echo "## Skills inventory"
+          total=0
+          for d in skills/*/; do
+            [ -d "$d" ] || continue
+            total=$((total + 1))
+          done
+          echo "  Total bundled skills: $total"
+
+          echo ""
+          echo "## Config coverage"
+          for f in configs/*.json5; do
+            [ -f "$f" ] || continue
+            settings=$(grep -c ":" "$f" 2>/dev/null || echo 0)
+            echo "  $f: ~$settings settings"
+          done
+
+          echo ""
+          echo "## Guide sizes"
+          for f in guides/*; do
+            [ -f "$f" ] || continue
+            size=$(du -h "$f" | cut -f1)
+            echo "  $f: $size"
+          done
+
+          echo ""
+          echo "✅ Audit complete"
+
+      - name: Check for stale content (>90 days untouched)
+        run: |
+          echo "Checking for stale files (>90 days since last change)..."
+          STALE=0
+          NINETY_DAYS_AGO=$(date -d "90 days ago" +%s 2>/dev/null || date -v-90d +%s 2>/dev/null || echo 0)
+
+          for f in guides/*.md guides/*.html configs/*.json5; do
+            [ -f "$f" ] || continue
+            last_mod=$(git log -1 --format="%ct" -- "$f" 2>/dev/null || echo 0)
+            if [ "$last_mod" -lt "$NINETY_DAYS_AGO" ] && [ "$last_mod" -gt 0 ]; then
+              days_old=$(( ($(date +%s) - last_mod) / 86400 ))
+              echo "  ⚠️  $f — $days_old days since last update"
+              STALE=$((STALE + 1))
+            fi
+          done
+
+          if [ "$STALE" -eq 0 ]; then
+            echo "  ✅ All content is fresh (<90 days)"
+          else
+            echo "  Found $STALE stale files — consider reviewing"
+          fi

@@ -1,0 +1,14 @@
+{
+  "ignorePatterns": [
+    {
+      "pattern": "^https://127\\.0\\.0\\.1"
+    },
+    {
+      "pattern": "^https://localhost"
+    }
+  ],
+  "timeout": "10000",
+  "retryOn429": true,
+  "retryCount": 3,
+  "aliveStatusCodes": [200, 206, 301, 302]
+}

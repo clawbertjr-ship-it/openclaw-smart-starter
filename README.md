@@ -105,6 +105,7 @@ Example configurations — copy one to `~/.openclaw/openclaw.json`.
 | [Memory System](guides/memory-system.md) | 4-tier memory architecture + LCM deep dive |
 | [Customization](guides/customization.md) | SOUL.md personalities, USER.md tips, AGENTS.md patterns |
 | [Troubleshooting](guides/troubleshooting.md) | Common issues and fixes |
+| [Worked Examples](guides/examples/) | Filled-in SOUL.md, USER.md, MEMORY.md examples |
 
 ---
 
@@ -149,6 +150,16 @@ This uses AI-powered summarization during compaction. Compacted messages become 
 - [Awesome Agent Cortex](https://github.com/0xNyk/awesome-agent-cortex) — Curated agent ecosystem resources
 
 ---
+
+## 🤖 CI/CD
+
+This repo includes automated health checks:
+
+| Workflow | Schedule | What It Does |
+|----------|----------|--------------|
+| **Link Check** | Every push + weekly | Validates all markdown and HTML links |
+| **Docs Health** | Every push | Verifies workspace templates, configs, guides, skills all present |
+| **Monthly Audit** | 1st of each month | Checks file freshness, flags stale content (>90 days) |
 
 ## License
 

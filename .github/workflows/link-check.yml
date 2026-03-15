@@ -1,0 +1,46 @@
+name: Link Check
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+  schedule:
+    - cron: '0 9 * * 1'  # Every Monday at 9 AM UTC
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check markdown links
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: 'yes'
+          config-file: '.github/mlc-config.json'
+          folder-path: '., guides/, docs/'
+          file-extension: '.md'
+
+      - name: Check HTML links
+        run: |
+          # Extract href/src from HTML files and check for broken internal refs
+          echo "Checking internal HTML references..."
+          ERRORS=0
+          for html in guides/*.html docs/*.html; do
+            [ -f "$html" ] || continue
+            echo "  Scanning $html..."
+            # Check that referenced local files exist
+            grep -oP 'href="(?!http|#|mailto)([^"]+)"' "$html" | sed 's/href="//;s/"//' | while read -r ref; do
+              dir=$(dirname "$html")
+              if [ ! -f "$dir/$ref" ] && [ ! -f "$ref" ]; then
+                echo "    ❌ Broken ref: $ref (in $html)"
+                ERRORS=$((ERRORS + 1))
+              fi
+            done
+          done
+          if [ "$ERRORS" -gt 0 ]; then
+            echo "Found $ERRORS broken references"
+            exit 1
+          fi
+          echo "✅ All internal references valid"

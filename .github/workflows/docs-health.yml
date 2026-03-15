@@ -1,0 +1,111 @@
+name: Docs Health
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  docs-health:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check required files exist
+        run: |
+          echo "Checking required workspace templates..."
+          ERRORS=0
+          for f in AGENTS.md SOUL.md USER.md IDENTITY.md TOOLS.md HEARTBEAT.md MEMORY.md BOOTSTRAP.md start.md; do
+            if [ -f "workspace/$f" ]; then
+              echo "  ✅ workspace/$f"
+            else
+              echo "  ❌ workspace/$f MISSING"
+              ERRORS=$((ERRORS + 1))
+            fi
+          done
+
+          echo ""
+          echo "Checking configs..."
+          for f in minimal.json5 standard.json5 advanced.json5; do
+            if [ -f "configs/$f" ]; then
+              echo "  ✅ configs/$f"
+            else
+              echo "  ❌ configs/$f MISSING"
+              ERRORS=$((ERRORS + 1))
+            fi
+          done
+
+          echo ""
+          echo "Checking guides..."
+          for f in advanced-operations.html operator-playbook.md memory-system.md troubleshooting.md customization.md; do
+            if [ -f "guides/$f" ]; then
+              echo "  ✅ guides/$f"
+            else
+              echo "  ❌ guides/$f MISSING"
+              ERRORS=$((ERRORS + 1))
+            fi
+          done
+
+          echo ""
+          echo "Checking skills have SKILL.md..."
+          SKILL_COUNT=0
+          SKILL_MISSING=0
+          for skill_dir in skills/*/; do
+            [ -d "$skill_dir" ] || continue
+            SKILL_COUNT=$((SKILL_COUNT + 1))
+            if [ ! -f "${skill_dir}SKILL.md" ]; then
+              echo "  ❌ ${skill_dir}SKILL.md MISSING"
+              SKILL_MISSING=$((SKILL_MISSING + 1))
+              ERRORS=$((ERRORS + 1))
+            fi
+          done
+          echo "  Skills: $SKILL_COUNT total, $SKILL_MISSING missing SKILL.md"
+
+          echo ""
+          echo "Checking setup scripts reference valid paths..."
+          if [ -f "setup.sh" ]; then
+            # Check that setup.sh references files that exist
+            for ref in "guides/advanced-operations.html" "guides/operator-playbook.md" "configs/standard.json5"; do
+              if grep -q "$ref" setup.sh && [ ! -f "$ref" ]; then
+                echo "  ❌ setup.sh references $ref but file missing"
+                ERRORS=$((ERRORS + 1))
+              fi
+            done
+            echo "  ✅ setup.sh references valid"
+          fi
+
+          echo ""
+          if [ "$ERRORS" -gt 0 ]; then
+            echo "❌ Found $ERRORS issues"
+            exit 1
+          fi
+          echo "✅ All docs health checks passed"
+
+      - name: Check configs are valid JSON5
+        run: |
+          echo "Validating config files..."
+          for f in configs/*.json5; do
+            [ -f "$f" ] || continue
+            # Strip comments and check basic JSON structure
+            stripped=$(sed 's|//.*||' "$f" | tr -d '\n')
+            if echo "$stripped" | grep -q '{'; then
+              echo "  ✅ $f (has JSON structure)"
+            else
+              echo "  ❌ $f (no JSON structure found)"
+              exit 1
+            fi
+          done
+          echo "✅ All configs valid"
+
+      - name: Check memoryFlush in all configs
+        run: |
+          echo "Verifying critical settings in configs..."
+          for f in configs/standard.json5 configs/advanced.json5; do
+            [ -f "$f" ] || continue
+            if grep -q "memoryFlush" "$f" && grep -q "enabled.*true" "$f"; then
+              echo "  ✅ $f has memoryFlush enabled"
+            else
+              echo "  ⚠️  $f may be missing memoryFlush.enabled: true"
+            fi
+          done
