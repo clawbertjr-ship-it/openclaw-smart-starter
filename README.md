@@ -105,6 +105,7 @@ Example configurations — copy one to `~/.openclaw/openclaw.json`.
 | [Memory System](guides/memory-system.md) | 4-tier memory architecture + LCM deep dive |
 | [Customization](guides/customization.md) | SOUL.md personalities, USER.md tips, AGENTS.md patterns |
 | [Troubleshooting](guides/troubleshooting.md) | Common issues and fixes |
+| [Agent-Friendly Design](guides/agent-friendly-design.html) | Framework for designing systems that AI agents can operate effectively |
 | [Worked Examples](guides/examples/) | Filled-in SOUL.md, USER.md, MEMORY.md examples |
 
 ---

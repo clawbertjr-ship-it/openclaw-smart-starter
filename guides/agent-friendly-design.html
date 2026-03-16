@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent-Friendly Design Framework — How to Make Anything AI-Readable</title>
+<style>
+  :root {
+    --bg: #0a0c10; --surface: #12151c; --surface-2: #181c26; --border: #262d3d;
+    --text: #e4e7ed; --text-muted: #7e869a; --text-dim: #4e5568;
+    --accent: #8b5cf6; --accent-glow: rgba(139,92,246,0.10); --accent-border: rgba(139,92,246,0.25);
+    --green: #10b981; --green-glow: rgba(16,185,129,0.08);
+    --amber: #f59e0b; --amber-glow: rgba(245,158,11,0.08);
+    --red: #ef4444; --red-glow: rgba(239,68,68,0.08);
+    --blue: #3b82f6; --blue-glow: rgba(59,130,246,0.08);
+    --cyan: #06b6d4; --cyan-glow: rgba(6,182,212,0.08);
+    --orange: #f97316; --orange-glow: rgba(249,115,22,0.08);
+    --rose: #f43f5e; --rose-glow: rgba(244,63,94,0.08);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; -webkit-font-smoothing: antialiased; }
+  ::selection { background: rgba(139,92,246,0.3); }
+
+  .toc { position: fixed; top: 0; left: 0; width: 260px; height: 100vh; background: var(--surface); border-right: 1px solid var(--border); overflow-y: auto; padding: 20px 14px; z-index: 100; font-size: 12px; }
+  .toc::-webkit-scrollbar { width: 4px; } .toc::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .toc-logo { font-size: 13px; font-weight: 700; color: var(--accent); margin-bottom: 20px; }
+  .toc-group { font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-dim); margin: 14px 0 4px; font-weight: 700; padding-left: 8px; }
+  .toc a { display: block; padding: 3px 8px; border-radius: 4px; color: var(--text-muted); text-decoration: none; transition: all 0.15s; }
+  .toc a:hover { color: var(--text); background: var(--surface-2); }
+
+  .main { margin-left: 260px; max-width: 880px; padding: 40px 40px 80px; }
+
+  .hero { padding: 60px 0 40px; border-bottom: 1px solid var(--border); margin-bottom: 48px; }
+  .hero-badge { display: inline-flex; padding: 4px 12px; border-radius: 16px; background: var(--accent-glow); border: 1px solid var(--accent-border); font-size: 11px; color: var(--accent); font-weight: 600; margin-bottom: 16px; }
+  .hero h1 { font-size: 32px; font-weight: 800; letter-spacing: -0.03em; line-height: 1.2; margin-bottom: 12px; }
+  .hero h1 span { background: linear-gradient(135deg, var(--accent), var(--blue)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .hero .sub { color: var(--text-muted); font-size: 15px; max-width: 640px; }
+
+  section { margin-bottom: 48px; scroll-margin-top: 20px; }
+  .sl { font-size: 10px; text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; margin-bottom: 4px; }
+  h2 { font-size: 22px; font-weight: 700; letter-spacing: -0.02em; margin-bottom: 8px; }
+  h3 { font-size: 17px; font-weight: 600; margin: 20px 0 6px; }
+  h4 { font-size: 14px; font-weight: 600; margin: 14px 0 4px; }
+  .desc { color: var(--text-muted); font-size: 13px; margin-bottom: 16px; max-width: 660px; }
+  p { margin-bottom: 10px; font-size: 13px; }
+  ul, ol { padding-left: 18px; margin-bottom: 12px; }
+  li { font-size: 13px; margin-bottom: 4px; color: var(--text-muted); }
+  li strong { color: var(--text); }
+
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 12px; }
+  .card h4 { margin-top: 0; }
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+
+  .tag { display: inline-block; padding: 1px 7px; border-radius: 4px; font-size: 10px; font-weight: 600; }
+  .tag-green { background: var(--green-glow); color: var(--green); border: 1px solid rgba(16,185,129,0.2); }
+  .tag-red { background: var(--red-glow); color: var(--red); border: 1px solid rgba(239,68,68,0.2); }
+  .tag-amber { background: var(--amber-glow); color: var(--amber); border: 1px solid rgba(245,158,11,0.2); }
+  .tag-blue { background: var(--blue-glow); color: var(--blue); border: 1px solid rgba(59,130,246,0.2); }
+
+  .tw { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  thead { background: var(--surface-2); }
+  th { padding: 10px 14px; text-align: left; font-weight: 600; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-dim); }
+  td { padding: 10px 14px; border-top: 1px solid var(--border); }
+
+  pre { background: var(--surface-2); border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; overflow-x: auto; font-size: 12px; line-height: 1.6; margin-bottom: 12px; font-family: 'SF Mono', 'Cascadia Code', monospace; }
+  .ic { background: var(--surface-2); border: 1px solid var(--border); padding: 1px 5px; border-radius: 3px; font-size: 11px; font-family: 'SF Mono', monospace; }
+  .cm { color: var(--text-dim); }
+
+  .co { border-radius: 6px; padding: 14px 16px; margin-bottom: 12px; font-size: 12px; border-left: 3px solid; }
+  .co-blue { background: var(--blue-glow); border-color: var(--blue); }
+  .co-green { background: var(--green-glow); border-color: var(--green); }
+  .co-amber { background: var(--amber-glow); border-color: var(--amber); }
+  .co-red { background: var(--red-glow); border-color: var(--red); }
+  .co-purple { background: var(--accent-glow); border-color: var(--accent); }
+  .co strong { display: block; margin-bottom: 3px; }
+
+  .principle { display: flex; gap: 16px; align-items: flex-start; padding: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 10px; }
+  .principle-num { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; flex-shrink: 0; }
+  .principle h4 { margin: 0 0 4px; }
+  .principle p { margin: 0; font-size: 12px; color: var(--text-muted); }
+
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+  .compare-bad { border-left: 3px solid var(--red); }
+  .compare-good { border-left: 3px solid var(--green); }
+
+  .checklist { list-style: none; padding: 0; }
+  .checklist li { padding: 6px 0; border-bottom: 1px solid rgba(38,45,61,0.5); font-size: 12px; display: flex; align-items: center; gap: 8px; }
+  .checklist li:last-child { border-bottom: none; }
+  .check { width: 18px; height: 18px; border-radius: 4px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0; }
+
+  footer { margin-top: 48px; padding: 24px 0; border-top: 1px solid var(--border); color: var(--text-dim); font-size: 11px; text-align: center; }
+  @media (max-width: 900px) { .toc { display: none; } .main { margin-left: 0; padding: 20px 16px; } .grid-2, .grid-3, .compare { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<nav class="toc">
+  <div class="toc-logo">🧬 Agent-Friendly Design</div>
+  <div class="toc-group">Foundation</div>
+  <a href="#why">Why This Matters</a>
+  <a href="#principles">The 8 Principles</a>
+  <a href="#spectrum">The Agent-Readiness Spectrum</a>
+  <div class="toc-group">For Repos</div>
+  <a href="#repo-structure">Repository Structure</a>
+  <a href="#repo-readme">README as Router</a>
+  <a href="#repo-configs">Configs & Templates</a>
+  <a href="#repo-examples">Worked Examples</a>
+  <a href="#repo-ci">CI & Self-Healing</a>
+  <div class="toc-group">For Documents</div>
+  <a href="#doc-structure">Document Structure</a>
+  <a href="#doc-metadata">Metadata & Context</a>
+  <a href="#doc-progressive">Progressive Depth</a>
+  <div class="toc-group">For Websites</div>
+  <a href="#web-structure">Site Architecture</a>
+  <a href="#web-llms-txt">llms.txt Standard</a>
+  <a href="#web-semantic">Semantic Markup</a>
+  <div class="toc-group">For APIs</div>
+  <a href="#api-discovery">API Discoverability</a>
+  <a href="#api-examples">Request/Response Examples</a>
+  <div class="toc-group">Patterns</div>
+  <a href="#anti-patterns">Anti-Patterns</a>
+  <a href="#checklist">Universal Checklist</a>
+  <a href="#scoring">Score Your Content</a>
+</nav>
+
+<div class="main">
+
+<div class="hero">
+  <div class="hero-badge">🧬 Design Framework v1.0</div>
+  <h1>How to Make Anything <span>Agent-Friendly</span></h1>
+  <p class="sub">A reusable framework for designing repos, documents, websites, and APIs so AI agents can discover, understand, and act on them.</p>
+
+  <div class="co co-purple" style="margin-top:28px;font-size:13px;line-height:1.8">
+    <strong style="font-size:14px">Your website has a new most important visitor, and it can't see your hero image.</strong>
+    Visa reports a 4,700% surge in AI-driven commerce traffic. 47% of US shoppers already delegate tasks to AI agents. Stripe, Mastercard, Google, and Shopify have all launched agent commerce infrastructure — because their transaction data proves agents are becoming buyers, not just browsers. On March 2, 2026, an AI agent completed Europe's first live bank payment without a human touching a button. The infrastructure for an agent-mediated economy isn't being planned. It's being paved.
+    <br><br>
+    Yet most of the internet remains invisible to it. Your marketing site is a brick wall to an agent. Your undocumented API is a locked door. Your PDF-only spec sheet is a dead end. Agent-friendliness is not a feature request — it's a <strong>distribution strategy</strong>. This framework covers the four surfaces where agents meet your organization — websites, documents, repositories, and APIs — and shows exactly how to make each one legible to both humans and machines. One site, two audiences, zero compromise.
+  </div>
+</div>
+
+<!-- WHY -->
+<section id="why">
+  <div class="sl" style="color:var(--accent)">Foundation</div>
+  <h2>Why This Matters</h2>
+  <p class="desc">AI agents are becoming primary consumers of documentation, repos, and APIs. Content designed for humans alone leaves 50-80% of its value on the table when an agent tries to use it.</p>
+
+  <div class="co co-purple">
+    <strong>The core insight:</strong> Agents don't browse — they parse. They don't skim — they search. They don't "get the gist" — they need explicit structure. Content that works for both humans AND agents isn't harder to make — it's just more intentionally structured.
+  </div>
+
+  <h3>The Two Audiences</h3>
+  <div class="compare">
+    <div class="card">
+      <h4>👤 Humans</h4>
+      <ul style="font-size:11px;padding-left:14px">
+        <li>Scan visually, skip sections</li>
+        <li>Infer context from design cues</li>
+        <li>Can handle ambiguity</li>
+        <li>Prefer narrative flow</li>
+        <li>Trust social proof and aesthetics</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🤖 Agents</h4>
+      <ul style="font-size:11px;padding-left:14px">
+        <li>Parse text sequentially or search</li>
+        <li>Need explicit structure (headings, lists)</li>
+        <li>Ambiguity causes hallucination</li>
+        <li>Prefer structured data over prose</li>
+        <li>Trust specificity and consistency</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 8 PRINCIPLES -->
+<section id="principles">
+  <div class="sl" style="color:var(--accent)">Core</div>
+  <h2>The 8 Principles of Agent-Friendly Design</h2>
+
+  <div class="principle">
+    <div class="principle-num" style="background:var(--accent-glow);color:var(--accent)">1</div>
+    <div>
+      <h4>Structure Over Prose</h4>
+      <p>Use headings, lists, tables, and code blocks instead of paragraphs. An agent can parse a table in one pass; a paragraph requires interpretation. Every section should be findable by heading search.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="principle-num" style="background:var(--blue-glow);color:var(--blue)">2</div>
+    <div>
+      <h4>Actionable Over Descriptive</h4>
+      <p>For every concept, include a copy-paste example. Don't just explain what a config does — show the config. Don't just describe an API — show the curl command. Agents execute; give them something to execute.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="principle-num" style="background:var(--green-glow);color:var(--green)">3</div>
+    <div>
+      <h4>Progressive Disclosure</h4>
+      <p>Layer complexity: quick start → standard usage → advanced patterns. An agent (or human) should be able to get value in 5 minutes AND find deep detail when needed. Never dump everything at once.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="principle-num" style="background:var(--amber-glow);color:var(--amber)">4</div>
+    <div>
+      <h4>Self-Describing Content</h4>
+      <p>Every file, section, and artifact should declare what it is, who it's for, and what you can do with it. An agent landing on any file should understand its purpose without reading anything else first.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="principle-num" style="background:var(--cyan-glow);color:var(--cyan)">5</div>
+    <div>
+      <h4>Examples Alongside Templates</h4>
+      <p>Never ship a template without a worked example. Brackets and placeholders tell agents the SHAPE of content but not the SUBSTANCE. A filled-in example teaches both structure and quality expectations.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="principle-num" style="background:var(--orange-glow);color:var(--orange)">6</div>
+    <div>
+      <h4>Failure Modes Documented</h4>
+      <p>For every system or process, document what goes wrong and how to fix it. Agents encounter errors constantly — a troubleshooting table is more valuable than a feature description. Common error → cause → fix.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="principle-num" style="background:var(--rose-glow);color:var(--rose)">7</div>
+    <div>
+      <h4>Machine-Readable Metadata</h4>
+      <p>Add structured metadata wherever possible: front matter in markdown, JSON-LD on websites, OpenAPI for APIs, package.json for repos. Agents find metadata 10x faster than extracting it from prose.</p>
+    </div>
+  </div>
+
+  <div class="principle">
+    <div class="principle-num" style="background:var(--accent-glow);color:var(--accent)">8</div>
+    <div>
+      <h4>Self-Bootstrapping</h4>
+      <p>The content should teach an agent how to use itself. A repo README should say "start here, then go here." A document should have a "How to read this" section. An API should have a discovery endpoint. The BOOTSTRAP.md pattern: first-run guide that self-destructs after onboarding.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SPECTRUM -->
+<section id="spectrum">
+  <div class="sl" style="color:var(--accent)">Measurement</div>
+  <h2>The Agent-Readiness Spectrum</h2>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>Level</th><th>Name</th><th>Description</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td><span class="tag tag-red">L0</span></td><td>Agent-Hostile</td><td>Requires browser rendering, login walls, no text extraction possible</td><td>SPA with no SSR, content behind OAuth</td></tr>
+        <tr><td><span class="tag tag-amber">L1</span></td><td>Agent-Readable</td><td>Text extractable but unstructured. Agent can read it but struggles to act on it.</td><td>Blog post, wiki page, long README with no sections</td></tr>
+        <tr><td><span class="tag tag-blue">L2</span></td><td>Agent-Navigable</td><td>Clear structure, headings, links. Agent can find specific information.</td><td>Well-organized docs site, structured README with TOC</td></tr>
+        <tr><td><span class="tag tag-green">L3</span></td><td>Agent-Actionable</td><td>Copy-paste configs, runnable scripts, drop-in templates. Agent can DO things.</td><td>Our OpenClaw Ops Kit, Nyk's hooks directory</td></tr>
+        <tr><td style="color:var(--accent)"><strong>L4</strong></td><td><strong>Agent-Native</strong></td><td>Self-bootstrapping, machine-readable metadata, progressive disclosure, failure docs, CI health checks.</td><td>Our Ops Kit v3.2, well-designed MCP servers</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="co co-purple">
+    <strong>Target L3 minimum, L4 when possible.</strong> Most content on the internet is L1. Good documentation is L2. The best agent-integrated resources are L3-L4. The gap between L2 and L3 is where most value is created.
+  </div>
+</section>
+
+<!-- REPO STRUCTURE -->
+<section id="repo-structure">
+  <div class="sl" style="color:var(--green)">Repos</div>
+  <h2>Agent-Friendly Repository Structure</h2>
+
+  <pre><span class="cm"># The ideal agent-friendly repo structure</span>
+repo/
+├── README.md                  <span class="cm"># Router — TOC, quick start, links to everything</span>
+├── AGENTS.md                  <span class="cm"># Agent-specific instructions (if repo is a tool)</span>
+│
+├── guides/                    <span class="cm"># Progressive depth</span>
+│   ├── getting-started.md     <span class="cm"># 5-minute quick start</span>
+│   ├── core-concepts.md       <span class="cm"># How it works (with diagrams)</span>
+│   ├── advanced-usage.md      <span class="cm"># Power-user patterns</span>
+│   ├── troubleshooting.md     <span class="cm"># Error → Cause → Fix tables</span>
+│   └── examples/              <span class="cm"># Worked examples (not just templates)</span>
+│
+├── configs/                   <span class="cm"># Tiered configs</span>
+│   ├── minimal.json           <span class="cm"># Bare minimum</span>
+│   ├── standard.json          <span class="cm"># Recommended</span>
+│   └── advanced.json          <span class="cm"># Full-featured</span>
+│
+├── templates/                 <span class="cm"># Drop-in files WITH examples alongside</span>
+│   ├── template.md            <span class="cm"># The template</span>
+│   └── template-example.md   <span class="cm"># A filled-in example</span>
+│
+├── scripts/                   <span class="cm"># Runnable automation</span>
+│   ├── setup.sh
+│   └── verify.sh              <span class="cm"># Self-test: "did setup work?"</span>
+│
+└── .github/
+    └── workflows/             <span class="cm"># CI health checks</span>
+        ├── link-check.yml
+        └── docs-health.yml</pre>
+</section>
+
+<!-- README AS ROUTER -->
+<section id="repo-readme">
+  <h3>README as Router (Not Wall of Text)</h3>
+  <p class="desc">Your README is a routing table, not an encyclopedia. An agent should be able to parse it and immediately know where to go for any topic.</p>
+
+  <div class="compare">
+    <div class="card compare-bad">
+      <h4 style="color:var(--red)">❌ Bad: Wall of Text README</h4>
+      <pre style="font-size:10px;margin:8px 0 0">Welcome to our project! We started this
+in 2024 because we noticed that most
+tools for X didn't do Y well. After
+months of work, we're proud to...
+
+(2000 words of narrative before you
+learn what this actually does or how
+to use it)</pre>
+    </div>
+    <div class="card compare-good">
+      <h4 style="color:var(--green)">✅ Good: Router README</h4>
+      <pre style="font-size:10px;margin:8px 0 0"># Project Name
+> One-line description
+
+## Quick Start (5 minutes)
+1. Install: `npm install -g tool`
+2. Configure: copy configs/minimal.json
+3. Run: `tool start`
+
+## Guides
+| Guide | What |
+|-------|------|
+| [Getting Started](g/start.md) | ... |
+| [Advanced](g/advanced.md) | ... |</pre>
+    </div>
+  </div>
+
+  <h4>README Checklist</h4>
+  <ul>
+    <li><strong>Line 1:</strong> What this is (one sentence)</li>
+    <li><strong>Lines 2-10:</strong> Quick start with copy-paste commands</li>
+    <li><strong>Next:</strong> Table of contents linking to deeper docs</li>
+    <li><strong>Tables over prose</strong> for feature lists, file descriptions, configs</li>
+    <li><strong>Badges</strong> for CI status, version, license (machine-readable signal)</li>
+  </ul>
+</section>
+
+<!-- CONFIGS & TEMPLATES -->
+<section id="repo-configs">
+  <h3>Tiered Configs</h3>
+  <p class="desc">Never ship one config that tries to be everything. Tier by experience level.</p>
+
+  <div class="grid-3">
+    <div class="card" style="border-left:3px solid var(--green)">
+      <h4>minimal.json</h4>
+      <p style="font-size:11px;color:var(--text-muted)">Only required settings. Heavy comments explaining each one. Works out of the box with zero customization. "I just want it running."</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--blue)">
+      <h4>standard.json</h4>
+      <p style="font-size:11px;color:var(--text-muted)">Recommended settings for most users. Includes optional-but-valuable features. Comments explain trade-offs. "I want it running well."</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--accent)">
+      <h4>advanced.json</h4>
+      <p style="font-size:11px;color:var(--text-muted)">Full-featured with all knobs exposed. Commented-out sections for features to enable. "I want full control."</p>
+    </div>
+  </div>
+
+  <div class="co co-green">
+    <strong>Golden rule for configs:</strong> Every setting should have a comment explaining WHAT it does AND WHY you'd change it. An agent reading the config should understand the system's architecture from the comments alone.
+  </div>
+</section>
+
+<!-- WORKED EXAMPLES -->
+<section id="repo-examples">
+  <h3>Worked Examples (Not Just Templates)</h3>
+
+  <div class="compare">
+    <div class="card compare-bad">
+      <h4 style="color:var(--red)">❌ Template Only</h4>
+      <pre style="font-size:10px;margin:8px 0 0"># SOUL.md
+- **Name:** [YOUR AGENT NAME]
+- **Style:** [DESCRIBE PERSONALITY]
+- **Boundaries:** [WHAT IT CAN/CANT DO]</pre>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:6px">Agent knows the shape but not the quality. Will produce generic output.</p>
+    </div>
+    <div class="card compare-good">
+      <h4 style="color:var(--green)">✅ Template + Example</h4>
+      <pre style="font-size:10px;margin:8px 0 0"># SOUL.md — Example: Dev Agent
+I am Atlas — a senior software
+engineering partner. I think in
+systems, debug methodically, ship
+clean code. Direct and technical.
+Skip pleasantries when in flow.</pre>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:6px">Agent sees the quality bar. Will produce specific, personality-rich output.</p>
+    </div>
+  </div>
+
+  <p><strong>Ship both.</strong> Template for structure, example for substance. Different use cases need different examples — ship 2-3 covering common personas.</p>
+</section>
+
+<!-- CI & SELF-HEALING -->
+<section id="repo-ci">
+  <h3>CI & Self-Healing</h3>
+  <p class="desc">Your repo should verify its own health automatically. Broken links, missing files, stale content — catch them before users do.</p>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>Workflow</th><th>What It Checks</th><th>Frequency</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Link Check</strong></td><td>All markdown/HTML links resolve</td><td>Every push + weekly</td></tr>
+        <tr><td><strong>Docs Health</strong></td><td>Required files exist, configs valid, scripts reference real paths</td><td>Every push</td></tr>
+        <tr><td><strong>Freshness Audit</strong></td><td>Flag files untouched >90 days</td><td>Monthly</td></tr>
+        <tr><td><strong>Example Validation</strong></td><td>Config examples parse correctly, scripts run without error</td><td>Every push</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- DOCUMENT STRUCTURE -->
+<section id="doc-structure">
+  <div class="sl" style="color:var(--blue)">Documents</div>
+  <h2>Agent-Friendly Document Structure</h2>
+
+  <h4>Every Document Should Have</h4>
+  <div class="grid-2">
+    <div class="card">
+      <h4>Header Block</h4>
+      <ul style="font-size:11px;padding-left:14px">
+        <li><strong>Title</strong> — what this document is</li>
+        <li><strong>Purpose</strong> — one sentence on why it exists</li>
+        <li><strong>Audience</strong> — who should read it</li>
+        <li><strong>Prerequisites</strong> — what you need first</li>
+        <li><strong>Last updated</strong> — freshness signal</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Body Patterns</h4>
+      <ul style="font-size:11px;padding-left:14px">
+        <li><strong>Tables over paragraphs</strong> for comparisons, options, feature lists</li>
+        <li><strong>Code blocks</strong> for any command, config, or snippet</li>
+        <li><strong>Callouts</strong> for warnings, tips, important notes</li>
+        <li><strong>Heading hierarchy</strong> — never skip levels (h2→h4 is bad)</li>
+        <li><strong>Cross-references</strong> — link to related docs explicitly</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- METADATA -->
+<section id="doc-metadata">
+  <h3>Metadata & Context Blocks</h3>
+  <pre><span class="cm"># For Markdown docs — add front matter:</span>
+---
+title: Agent-Friendly Design Framework
+version: 1.0
+audience: developers, operators
+prerequisites: basic understanding of AI agents
+last_updated: 2026-03-15
+tags: [design, framework, agent, documentation]
+---
+
+<span class="cm"># For HTML pages — add structured data:</span>
+&lt;meta name="description" content="Framework for making content AI-agent readable"&gt;
+&lt;meta name="keywords" content="agent-friendly, AI, documentation, design"&gt;
+
+<span class="cm"># For any file — self-describing header comment:</span>
+<span class="cm"># What: Configuration for XYZ service</span>
+<span class="cm"># Who: Operators deploying XYZ</span>
+<span class="cm"># How: Copy to ~/.config/xyz.json, edit values, restart</span></pre>
+</section>
+
+<!-- PROGRESSIVE DEPTH -->
+<section id="doc-progressive">
+  <h3>Progressive Depth Pattern</h3>
+
+  <pre><span class="cm"># Layer 1: TL;DR (5 seconds)</span>
+## Summary
+One paragraph. What this is, what it does, why you care.
+
+<span class="cm"># Layer 2: Quick Start (5 minutes)</span>
+## Quick Start
+Numbered steps. Copy-paste commands. Get to "it works" fast.
+
+<span class="cm"># Layer 3: How It Works (15 minutes)</span>
+## Architecture
+Diagrams, flow charts, component descriptions.
+Tables of options and settings.
+
+<span class="cm"># Layer 4: Reference (as needed)</span>
+## API Reference / Config Reference / Troubleshooting
+Complete tables. Every option. Every error code. Every edge case.
+
+<span class="cm"># Layer 5: Deep Dives (linked, not inline)</span>
+## See Also
+Links to separate deep-dive docs for specific topics.</pre>
+
+  <div class="co co-blue">
+    <strong>The 5-second test:</strong> Can an agent read the first 10 lines of your document and know (a) what it is, (b) whether it's relevant, (c) where to go for more? If not, add a Summary section.
+  </div>
+</section>
+
+<!-- WEBSITES -->
+<section id="web-structure">
+  <div class="sl" style="color:var(--cyan)">Websites</div>
+  <h2>Agent-Friendly Website Architecture</h2>
+  <p class="desc">The biggest misconception: you need two sites (one for humans, one for agents). Wrong. You need ONE site with TWO layers. Humans see the design. Agents read the data underneath.</p>
+
+  <h3>The Dual-Layer Pattern</h3>
+  <div class="co co-purple">
+    <strong>Core principle:</strong> Every page has a human layer (visual, emotional, branded) and a machine layer (structured, parseable, actionable). Both live in the same HTML. Humans never see the machine layer. Agents skip the human layer.
+  </div>
+
+  <div class="compare">
+    <div class="card">
+      <h4>👤 Layer 1: Human (Visible)</h4>
+      <ul style="font-size:11px;padding-left:14px">
+        <li>Beautiful design, brand identity</li>
+        <li>Hero images, gradients, animations</li>
+        <li>Narrative copy, storytelling</li>
+        <li>Social proof, testimonials</li>
+        <li>Emotional CTAs ("Get Started Free")</li>
+        <li>Video demos, screenshots</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🤖 Layer 2: Machine (Invisible)</h4>
+      <ul style="font-size:11px;padding-left:14px">
+        <li>JSON-LD structured data in &lt;script&gt; tags</li>
+        <li>Semantic HTML (article, nav, table, h1-h6)</li>
+        <li>Meta tags (description, keywords, og:)</li>
+        <li>llms.txt site index</li>
+        <li>MCP endpoints for transactions</li>
+        <li>OpenAPI spec for API discovery</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Complete Dual-Layer Page Example</h3>
+  <pre><span class="cm">&lt;!-- This is ONE page. Humans see the pretty version. --&gt;</span>
+<span class="cm">&lt;!-- Agents read the structured data underneath. --&gt;</span>
+
+&lt;head&gt;
+  <span class="cm">&lt;!-- MACHINE LAYER: Meta tags agents can parse --&gt;</span>
+  &lt;title&gt;Mission Labs — Analytical Testing Services&lt;/title&gt;
+  &lt;meta name="description" content="ISO 17025 analytical lab. HPLC, GC-MS,
+    mass spec. Food safety, water testing, nanoparticle fabrication."&gt;
+  &lt;meta name="keywords" content="analytical testing, HPLC, food safety,
+    ISO 17025, pesticide screening"&gt;
+  &lt;link rel="canonical" href="https://missionlabs.us"&gt;
+
+  <span class="cm">&lt;!-- MACHINE LAYER: JSON-LD structured data --&gt;</span>
+  <span class="cm">&lt;!-- Invisible to humans. Agents parse this directly. --&gt;</span>
+  &lt;script type="application/ld+json"&gt;
+  {
+    "@context": "https://schema.org",
+    "@type": "MedicalLaboratory",
+    "name": "Mission Labs, LLC",
+    "url": "https://missionlabs.us",
+    "description": "Analytical testing laboratory",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Whitehorse",
+      "addressRegion": "YT"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Testing Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Multi-Residue Pesticide Screen",
+            "description": "400+ analytes via HPLC-MS/MS"
+          },
+          "price": "150.00",
+          "priceCurrency": "USD",
+          "eligibleDuration": { "@type": "QuantitativeValue",
+            "value": 48, "unitCode": "HUR" }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Water Quality Panel"
+          },
+          "price": "75.00",
+          "priceCurrency": "USD"
+        }
+      ]
+    },
+    "knowsAbout": ["HPLC", "GC-MS", "Mass Spectrometry",
+      "Food Safety", "Water Testing", "Nanoparticles"],
+    "accreditation": "ISO 17025:2017"
+  }
+  &lt;/script&gt;
+&lt;/head&gt;
+
+&lt;body&gt;
+  <span class="cm">&lt;!-- HUMAN LAYER: Beautiful branded content --&gt;</span>
+  &lt;header&gt;
+    &lt;nav aria-label="Main navigation"&gt;
+      &lt;a href="/"&gt;Mission Labs&lt;/a&gt;
+      &lt;a href="/services"&gt;Services&lt;/a&gt;
+      &lt;a href="/about"&gt;About&lt;/a&gt;
+      &lt;a href="/contact"&gt;Contact&lt;/a&gt;
+    &lt;/nav&gt;
+  &lt;/header&gt;
+
+  &lt;main&gt;
+    <span class="cm">&lt;!-- Humans see the hero. Agents skip to &lt;article&gt;. --&gt;</span>
+    &lt;section class="hero"&gt;
+      &lt;h1&gt;Precision Analytical Testing&lt;/h1&gt;
+      &lt;p&gt;FDA-compliant food safety testing. 48-hour turnaround.&lt;/p&gt;
+      &lt;a href="/contact"&gt;Request a Quote&lt;/a&gt;
+    &lt;/section&gt;
+
+    <span class="cm">&lt;!-- Both humans AND agents benefit from semantic structure --&gt;</span>
+    &lt;article&gt;
+      &lt;h2&gt;Our Services&lt;/h2&gt;
+      &lt;table&gt;
+        &lt;thead&gt;
+          &lt;tr&gt;&lt;th&gt;Service&lt;/th&gt;&lt;th&gt;Method&lt;/th&gt;
+          &lt;th&gt;Turnaround&lt;/th&gt;&lt;th&gt;Price&lt;/th&gt;&lt;/tr&gt;
+        &lt;/thead&gt;
+        &lt;tbody&gt;
+          &lt;tr&gt;
+            &lt;td&gt;Pesticide Screen&lt;/td&gt;
+            &lt;td&gt;HPLC-MS/MS (400+ analytes)&lt;/td&gt;
+            &lt;td&gt;48 hours&lt;/td&gt;
+            &lt;td&gt;$150/sample&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td&gt;Water Quality&lt;/td&gt;
+            &lt;td&gt;EPA methods&lt;/td&gt;
+            &lt;td&gt;72 hours&lt;/td&gt;
+            &lt;td&gt;$75/sample&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/tbody&gt;
+      &lt;/table&gt;
+    &lt;/article&gt;
+  &lt;/main&gt;
+&lt;/body&gt;</pre>
+
+  <div class="co co-green">
+    <strong>What happens here:</strong> A human visits and sees a beautiful branded page with a hero, imagery, and a "Request a Quote" button. An AI agent visits and parses the JSON-LD to learn: this lab does pesticide screening for $150/sample with 48-hour turnaround using HPLC-MS/MS. Both get exactly what they need from the SAME page.
+  </div>
+
+  <h3>The Four Machine Layers</h3>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Layer</th><th>What It Is</th><th>Where It Lives</th><th>What Agents Use It For</th></tr></thead>
+      <tbody>
+        <tr><td><strong>1. JSON-LD</strong></td><td>Structured data about your content</td><td><code class="ic">&lt;script type="application/ld+json"&gt;</code> in &lt;head&gt;</td><td>Understanding what you offer, pricing, identity, services. Google and AI agents both use this.</td></tr>
+        <tr><td><strong>2. Meta Tags</strong></td><td>Page-level metadata</td><td><code class="ic">&lt;meta&gt;</code> tags in &lt;head&gt;</td><td>Quick page summary without parsing body. Title, description, keywords, Open Graph.</td></tr>
+        <tr><td><strong>3. Semantic HTML</strong></td><td>Meaningful structure</td><td>The page body itself</td><td>Finding and extracting specific content (tables, lists, headings, articles). Agents parse &lt;table&gt; 10x better than a styled &lt;div&gt; grid.</td></tr>
+        <tr><td><strong>4. llms.txt</strong></td><td>Site-level index for AI</td><td><code class="ic">/llms.txt</code> at site root</td><td>Discovery: "what pages exist and what are they about?" Before parsing any page, agents check this.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>What Agents Can't See (Don't Rely On)</h4>
+  <ul>
+    <li>❌ <strong>Images, videos, screenshots</strong> — unless you provide alt text or captions, agents skip these entirely</li>
+    <li>❌ <strong>CSS-styled layouts</strong> — agents don't see your grid, your gradients, or your hover effects. They see the DOM.</li>
+    <li>❌ <strong>Client-side rendered content</strong> — if JavaScript builds the page after load, most agents get an empty shell</li>
+    <li>❌ <strong>Content behind login walls</strong> — agents can't authenticate (unless you provide API access)</li>
+    <li>❌ <strong>PDFs</strong> — harder to parse than HTML. Always provide HTML version alongside PDF.</li>
+    <li>❌ <strong>Pricing buried in prose</strong> — "Contact us for pricing" is agent-hostile. Structured price data converts.</li>
+  </ul>
+</section>
+
+<section id="web-llms-txt">
+  <h3>The llms.txt Standard</h3>
+  <p class="desc">Like robots.txt tells crawlers what to index, llms.txt tells AI agents what your site is about and where to find key content. It's the front door for agent visitors.</p>
+
+  <pre><span class="cm"># Place at: yoursite.com/llms.txt</span>
+<span class="cm"># This is the FIRST thing an AI agent reads about your site</span>
+
+# Mission Labs
+> Analytical testing laboratory. HPLC, GC-MS, mass spec.
+> Food safety, water quality, nanoparticle fabrication.
+> ISO 17025:2017 accredited.
+
+## Services
+- [Testing Services](https://missionlabs.us/services): Pesticide screen, water quality, custom analysis
+- [Pricing](https://missionlabs.us/pricing): Per-sample pricing for all test panels
+- [Turnaround](https://missionlabs.us/turnaround): Standard 48h, rush 24h available
+
+## For Clients
+- [Submit Samples](https://missionlabs.us/submit): Chain of custody form, shipping instructions
+- [Track Results](https://missionlabs.us/results): Sample status and COA downloads
+- [API Access](https://missionlabs.us/api): Programmatic sample submission and result retrieval
+
+## About
+- [Our Lab](https://missionlabs.us/about): Equipment, team, accreditation
+- [Quality Manual](https://missionlabs.us/quality): ISO 17025 QMS documentation
+- [Contact](https://missionlabs.us/contact): Email, phone, address
+
+<span class="cm"># Optional: llms-full.txt with complete page content inline</span>
+<span class="cm"># For high-value pages, include the full text so agents don't need to fetch each URL</span></pre>
+
+  <div class="co co-green">
+    <strong>Already adopted by:</strong> OpenClaw (docs.openclaw.ai/llms.txt), Anthropic, Mintlify, Cloudflare, Stripe, and growing fast. 5 minutes to add. Makes your entire site 10x more discoverable. <a href="https://llmstxt.org" style="color:var(--green)">llmstxt.org</a> has the full spec.
+  </div>
+
+  <h4>llms.txt vs llms-full.txt</h4>
+  <div class="tw">
+    <table>
+      <thead><tr><th>File</th><th>Content</th><th>Size</th><th>Use When</th></tr></thead>
+      <tbody>
+        <tr><td><code class="ic">llms.txt</code></td><td>Index — titles + URLs + one-line descriptions</td><td>~1-5 KB</td><td>Always. This is the minimum.</td></tr>
+        <tr><td><code class="ic">llms-full.txt</code></td><td>Full content of key pages inlined as markdown</td><td>~50-500 KB</td><td>When you want agents to get everything in one fetch. Great for docs sites.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section id="web-semantic">
+  <h3>Semantic HTML — The Foundation</h3>
+  <p class="desc">Semantic HTML is the single highest-leverage thing you can do. It benefits humans (accessibility, SEO) AND agents (parseability) simultaneously. Zero tradeoff.</p>
+
+  <div class="compare">
+    <div class="card compare-bad">
+      <h4 style="color:var(--red)">❌ Div Soup (Agent-Hostile)</h4>
+      <pre style="font-size:10px;margin:8px 0 0">&lt;div class="header"&gt;
+  &lt;div class="title"&gt;Services&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class="card-grid"&gt;
+  &lt;div class="card"&gt;
+    &lt;div class="card-title"&gt;Testing&lt;/div&gt;
+    &lt;div class="card-price"&gt;$150&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:6px">Agent sees nested divs with class names. Has to guess what "card-price" means. No semantic meaning. CSS classes are not reliable structure.</p>
+    </div>
+    <div class="card compare-good">
+      <h4 style="color:var(--green)">✅ Semantic HTML (Agent-Native)</h4>
+      <pre style="font-size:10px;margin:8px 0 0">&lt;article&gt;
+  &lt;h2&gt;Services&lt;/h2&gt;
+  &lt;table&gt;
+    &lt;tr&gt;
+      &lt;th&gt;Service&lt;/th&gt;
+      &lt;th&gt;Price&lt;/th&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;Testing&lt;/td&gt;
+      &lt;td&gt;$150&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+&lt;/article&gt;</pre>
+      <p style="font-size:10px;color:var(--text-dim);margin-top:6px">Agent parses table structure. Knows "Service" and "Price" are headers. Extracts "$150" as the price for "Testing". Zero ambiguity.</p>
+    </div>
+  </div>
+
+  <h4>Semantic Elements That Matter Most</h4>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Element</th><th>Use For</th><th>Why Agents Care</th></tr></thead>
+      <tbody>
+        <tr><td><code class="ic">&lt;article&gt;</code></td><td>Self-contained content block</td><td>Agents know this is a complete unit they can extract</td></tr>
+        <tr><td><code class="ic">&lt;nav&gt;</code></td><td>Navigation links</td><td>Agents find site structure without guessing</td></tr>
+        <tr><td><code class="ic">&lt;table&gt;</code></td><td>Tabular data (pricing, features, comparisons)</td><td>Agents parse tables into structured data directly</td></tr>
+        <tr><td><code class="ic">&lt;h1&gt;-&lt;h6&gt;</code></td><td>Content hierarchy</td><td>Agents build a mental outline and navigate by heading</td></tr>
+        <tr><td><code class="ic">&lt;time&gt;</code></td><td>Dates and times</td><td><code class="ic">&lt;time datetime="2026-03-15"&gt;</code> is unambiguous</td></tr>
+        <tr><td><code class="ic">&lt;address&gt;</code></td><td>Contact info</td><td>Agents extract location, email, phone reliably</td></tr>
+        <tr><td><code class="ic">&lt;main&gt;</code></td><td>Primary content area</td><td>Agents skip header/footer/sidebar and go straight to content</td></tr>
+        <tr><td><code class="ic">&lt;details&gt;/&lt;summary&gt;</code></td><td>Expandable sections</td><td>Progressive disclosure — agents can see what's inside without expanding</td></tr>
+        <tr><td><code class="ic">&lt;figure&gt;/&lt;figcaption&gt;</code></td><td>Images with descriptions</td><td>Agents read the caption to understand what the image shows</td></tr>
+        <tr><td><code class="ic">&lt;ol&gt;/&lt;ul&gt;</code></td><td>Lists (steps, features)</td><td>Agents know ordering matters in &lt;ol&gt;, not in &lt;ul&gt;</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>JSON-LD Schema Patterns (Copy-Paste Ready)</h3>
+  <p class="desc">The most impactful structured data types. Drop these into your &lt;head&gt; and agents immediately understand your content.</p>
+
+  <h4>For a Business / Service Provider</h4>
+  <pre>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Your Company",
+  "url": "https://yoursite.com",
+  "description": "What you do in one sentence",
+  "telephone": "+1-555-123-4567",
+  "email": "hello@yoursite.com",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "123 Main St",
+    "addressLocality": "City",
+    "addressRegion": "State",
+    "postalCode": "12345"
+  },
+  "openingHours": "Mo-Fr 09:00-17:00",
+  "priceRange": "$$",
+  "areaServed": "United States",
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "itemOffered": {
+          "@type": "Service",
+          "name": "Service Name",
+          "description": "What this service does"
+        },
+        "price": "100.00",
+        "priceCurrency": "USD"
+      }
+    ]
+  }
+}
+&lt;/script&gt;</pre>
+
+  <h4>For a Software Product</h4>
+  <pre>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Your Product",
+  "url": "https://yoursite.com",
+  "description": "What it does",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Windows, macOS, Linux",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "softwareVersion": "1.0.0",
+  "downloadUrl": "https://yoursite.com/download",
+  "installUrl": "https://yoursite.com/docs/install",
+  "releaseNotes": "https://yoursite.com/changelog"
+}
+&lt;/script&gt;</pre>
+
+  <h4>For an Article / Blog Post</h4>
+  <pre>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Article Title",
+  "author": { "@type": "Person", "name": "Author Name" },
+  "datePublished": "2026-03-15",
+  "dateModified": "2026-03-15",
+  "description": "One-line summary",
+  "wordCount": 2500,
+  "keywords": ["keyword1", "keyword2"],
+  "mainEntityOfPage": "https://yoursite.com/article-url"
+}
+&lt;/script&gt;</pre>
+
+  <h4>For a FAQ Page</h4>
+  <pre>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How long does testing take?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Standard turnaround is 48 hours. Rush (24h) available."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What certifications do you have?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "ISO 17025:2017 accredited, FDA compliant."
+      }
+    }
+  ]
+}
+&lt;/script&gt;</pre>
+
+  <h3>The Agentic Commerce Layer (Advanced)</h3>
+  <p class="desc">Beyond content — when agents need to actually BUY from your site. This is where things are heading in 2026.</p>
+
+  <div class="co co-amber">
+    <strong>The shift:</strong> Your next customer might not be a human clicking "Add to Cart." It might be an AI agent calling your API with a budget and a policy constraint. Visa reports a 4,700% jump in AI-driven retail traffic. The protocol stack is live.
+  </div>
+
+  <h4>The Agentic Commerce Stack</h4>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Layer</th><th>Protocol</th><th>What It Does</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Discovery</strong></td><td>MCP (Model Context Protocol)</td><td>Agents find your products/services and understand what you offer</td><td><span class="tag tag-green">Live</span> — 10K+ servers, 97M+ SDK downloads</td></tr>
+        <tr><td><strong>Transaction</strong></td><td>UCP / ACP / x402</td><td>Agents negotiate terms and complete checkout programmatically</td><td><span class="tag tag-green">Live</span> — Google, OpenAI, Coinbase</td></tr>
+        <tr><td><strong>Payment</strong></td><td>SPTs / Agent Tokens / Stablecoins</td><td>Agents pay without seeing card numbers. Scoped, bounded, auditable.</td><td><span class="tag tag-green">Live</span> — Stripe, Mastercard, Coinbase</td></tr>
+        <tr><td><strong>Trust</strong></td><td>Visa TAP / Mastercard Verifiable Intent</td><td>Distinguish legitimate agents from bots. Cryptographic audit trails.</td><td><span class="tag tag-amber">Shipping</span> — 100+ partners</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h4>What This Means for Your Site</h4>
+  <p>Even if you're not building agentic checkout today, the foundation is the same:</p>
+  <ol>
+    <li><strong>Machine-readable catalog</strong> — JSON-LD, structured pricing, clear service descriptions. This is step 1 whether you're selling to humans or agents.</li>
+    <li><strong>API surface</strong> — if your business can be queried programmatically, agents can integrate with you. REST, GraphQL, or MCP endpoints.</li>
+    <li><strong>Deterministic pricing</strong> — "Contact us for a quote" is agent-hostile. Structured prices with clear units convert for both humans and agents.</li>
+    <li><strong>Trust signals</strong> — accreditations, certifications, reviews as structured data (not just logos on a page).</li>
+  </ol>
+
+  <div class="co co-blue">
+    <strong>The dual-funnel model:</strong> Human funnel converts on brand and emotion. Agent funnel converts on structured data and programmable payments. The companies running both will compound while everyone else optimizes for only half their market.
+  </div>
+</section>
+
+<section id="web-checklist">
+  <h3>Website Agent-Readiness Checklist</h3>
+  <div class="grid-2">
+    <div class="card">
+      <h4>🏗️ Foundation (Do First)</h4>
+      <ul class="checklist">
+        <li><span class="check">□</span> Server-side rendered (SSR/SSG, not client-only SPA)</li>
+        <li><span class="check">□</span> Semantic HTML (article, nav, table, headings)</li>
+        <li><span class="check">□</span> Meta description on every page</li>
+        <li><span class="check">□</span> JSON-LD structured data (Organization + key pages)</li>
+        <li><span class="check">□</span> XML sitemap at /sitemap.xml</li>
+        <li><span class="check">□</span> llms.txt at site root</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🚀 Advanced (Do Next)</h4>
+      <ul class="checklist">
+        <li><span class="check">□</span> llms-full.txt with key page content inlined</li>
+        <li><span class="check">□</span> FAQ page with FAQPage schema</li>
+        <li><span class="check">□</span> Pricing as structured data (not images/PDFs)</li>
+        <li><span class="check">□</span> API endpoint for programmatic access</li>
+        <li><span class="check">□</span> OpenAPI spec at /api/openapi.json</li>
+        <li><span class="check">□</span> MCP server for agent integration</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- APIs -->
+<section id="api-discovery">
+  <div class="sl" style="color:var(--orange)">APIs</div>
+  <h2>Agent-Friendly API Design</h2>
+
+  <h4>Discoverability</h4>
+  <ul>
+    <li><strong>OpenAPI/Swagger spec</strong> at a well-known path (<code class="ic">/api/openapi.json</code>)</li>
+    <li><strong>Health endpoint</strong> — <code class="ic">GET /health</code> returns <code class="ic">{"ok":true}</code></li>
+    <li><strong>Index endpoint</strong> — <code class="ic">GET /api</code> lists all available routes</li>
+    <li><strong>Consistent error format</strong> — <code class="ic">{"error": "message", "code": "THING_NOT_FOUND"}</code></li>
+    <li><strong>Pagination</strong> with clear next/prev links</li>
+  </ul>
+</section>
+
+<section id="api-examples">
+  <h3>Request/Response Examples</h3>
+  <p class="desc">Every API endpoint should have at least one complete request + response example. An agent should be able to construct a valid API call by copying the example.</p>
+
+  <div class="compare">
+    <div class="card compare-bad">
+      <h4 style="color:var(--red)">❌ Description Only</h4>
+      <pre style="font-size:10px;margin:8px 0 0">POST /api/items
+Creates a new item.
+Body should contain name (string)
+and type (string).</pre>
+    </div>
+    <div class="card compare-good">
+      <h4 style="color:var(--green)">✅ Full Example</h4>
+      <pre style="font-size:10px;margin:8px 0 0">POST /api/items
+Content-Type: application/json
+
+{"name":"Widget","type":"physical"}
+
+Response (201):
+{"id":42,"name":"Widget","type":"physical"}</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ANTI-PATTERNS -->
+<section id="anti-patterns">
+  <div class="sl" style="color:var(--red)">Avoid</div>
+  <h2>Anti-Patterns (Things That Break Agents)</h2>
+
+  <div class="tw">
+    <table>
+      <thead><tr><th>Anti-Pattern</th><th>Why It's Bad</th><th>Fix</th></tr></thead>
+      <tbody>
+        <tr><td><strong>46KB monolithic README</strong></td><td>Agents hit context limits. Can't find anything in the wall.</td><td>Router README + linked docs</td></tr>
+        <tr><td><strong>Content behind auth walls</strong></td><td>Agents can't log in. Content is invisible.</td><td>Public docs, auth only for app</td></tr>
+        <tr><td><strong>Client-side only rendering</strong></td><td>Agents get empty HTML shells</td><td>SSR/SSG, or provide markdown source</td></tr>
+        <tr><td><strong>PDF-only docs</strong></td><td>Harder to parse than markdown/HTML</td><td>Provide markdown alongside PDF</td></tr>
+        <tr><td><strong>Screenshots instead of text</strong></td><td>Agents can't read images (reliably)</td><td>Text descriptions + screenshots</td></tr>
+        <tr><td><strong>Undocumented configs</strong></td><td>Agent can't know what settings do</td><td>Inline comments on every setting</td></tr>
+        <tr><td><strong>Templates without examples</strong></td><td>Agent knows shape but not quality</td><td>Ship filled-in examples</td></tr>
+        <tr><td><strong>No error documentation</strong></td><td>Agent can't self-recover from failures</td><td>Error → Cause → Fix tables</td></tr>
+        <tr><td><strong>"See video for setup"</strong></td><td>Agents can't watch videos</td><td>Written steps + video as supplement</td></tr>
+        <tr><td><strong>Scattered information</strong></td><td>Agent wastes context gathering fragments</td><td>Single source of truth per topic</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- UNIVERSAL CHECKLIST -->
+<section id="checklist">
+  <div class="sl" style="color:var(--green)">Action</div>
+  <h2>Universal Agent-Friendly Checklist</h2>
+  <p class="desc">Score your content. Every checkbox is one point. Target 15+ for L3, 20+ for L4.</p>
+
+  <div class="grid-2">
+    <div class="card">
+      <h4>📐 Structure (6 points)</h4>
+      <ul class="checklist">
+        <li><span class="check">□</span> Clear heading hierarchy (h1→h2→h3, no skips)</li>
+        <li><span class="check">□</span> Table of contents or index</li>
+        <li><span class="check">□</span> Tables for comparisons and options</li>
+        <li><span class="check">□</span> Code blocks for all commands and configs</li>
+        <li><span class="check">□</span> Consistent formatting throughout</li>
+        <li><span class="check">□</span> Cross-references between related sections</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🎯 Actionability (5 points)</h4>
+      <ul class="checklist">
+        <li><span class="check">□</span> Copy-paste quick start (<5 minutes)</li>
+        <li><span class="check">□</span> Runnable scripts or commands</li>
+        <li><span class="check">□</span> Drop-in config files or templates</li>
+        <li><span class="check">□</span> Worked examples (not just templates)</li>
+        <li><span class="check">□</span> Verification step ("did it work?")</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🧠 Agent-Specific (5 points)</h4>
+      <ul class="checklist">
+        <li><span class="check">□</span> Self-describing (purpose clear from first 10 lines)</li>
+        <li><span class="check">□</span> Machine-readable metadata (front matter, JSON-LD, etc.)</li>
+        <li><span class="check">□</span> Progressive disclosure (beginner → advanced path)</li>
+        <li><span class="check">□</span> Failure mode documentation (error → cause → fix)</li>
+        <li><span class="check">□</span> Self-bootstrapping instructions</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🔧 Maintenance (4 points)</h4>
+      <ul class="checklist">
+        <li><span class="check">□</span> Automated link checking</li>
+        <li><span class="check">□</span> Content health CI</li>
+        <li><span class="check">□</span> Freshness dates visible</li>
+        <li><span class="check">□</span> Version/changelog tracked</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SCORING -->
+<section id="scoring">
+  <h2>Score Your Content</h2>
+  <div class="tw">
+    <table>
+      <thead><tr><th>Score</th><th>Level</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>0-5</td><td><span class="tag tag-red">L0-L1</span></td><td>Agent-hostile or barely readable. Major restructuring needed.</td></tr>
+        <tr><td>6-10</td><td><span class="tag tag-amber">L2</span></td><td>Agent-navigable. Good structure, but missing actionable content.</td></tr>
+        <tr><td>11-15</td><td><span class="tag tag-blue">L3</span></td><td>Agent-actionable. Agents can find and use your content effectively.</td></tr>
+        <tr><td>16-20</td><td><span class="tag tag-green">L4</span></td><td>Agent-native. Best-in-class. Self-bootstrapping, self-healing, fully documented.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="co co-purple">
+    <strong>Apply this framework to everything you build.</strong> Before publishing a repo, document, website, or API — run through the checklist. The 30 minutes you spend making content agent-friendly will save hundreds of hours for every agent (and human) that consumes it.
+  </div>
+</section>
+
+<footer>
+  Agent-Friendly Design Framework v1.0 · March 2026<br>
+  The pattern behind the pattern — reference this before building anything agents should consume.
+</footer>
+
+</div>
+</body>
+</html>
